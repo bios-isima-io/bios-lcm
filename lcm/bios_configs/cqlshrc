@@ -1,0 +1,12 @@
+[connection]
+host = localhost
+port = DB_PORT
+factory = cqlshlib.ssl.ssl_transport_factory
+
+[ssl]
+certfile = /var/ext_resources/CLUSTER_NAME.cer.pem
+validate = false
+version = TLSv1_2
+# Next 2 lines must be provided when require_client_auth = true in the db.yaml file
+userkey = /var/ext_resources/CLUSTER_NAME.key.pem
+usercert = /var/ext_resources/CLUSTER_NAME.cer.pem

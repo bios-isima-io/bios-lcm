@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# this script generate self signed certificate for db
+
+if [ $# -lt 3 ]; then
+    echo "Usage: $(basename $0) <KEY_STORE_PATH> <cluster_name> <common_name> [password]"
+    echo "  ** Password is 'secret' if omitted."
+    exit 1
+fi
+
+KEY_STORE_PATH="$1"
+CLUSTER_NAME="$2"
+COMMON_NAME="$3"
+PASSWORD="$4"
+
+: ${PASSWORD:='secret'}
+FILE_PREFIX="db"
+
+mkdir -p "$KEY_STORE_PATH"
+
+KEY_STORE="$KEY_STORE_PATH/$FILE_PREFIX.keystore"
+PKS_KEY_STORE="$KEY_STORE_PATH/$FILE_PREFIX.pks12.keystore"
+TRUST_STORE="$KEY_STORE_PATH/$FILE_PREFIX.truststore"
+
+CLUSTER_PUBLIC_CERT="$KEY_STORE_PATH/CLUSTER_${CLUSTER_NAME}_PUBLIC.cer"
+CLIENT_PUBLIC_CERT="$KEY_STORE_PATH/CLIENT_${CLUSTER_NAME}_PUBLIC.cer"
+
+# Create the cluster key for cluster communication.
+keytool -genkey -keyalg RSA -alias "${CLUSTER_NAME}_CLUSTER" -keystore "$KEY_STORE" -storepass "$PASSWORD" -keypass "$PASSWORD" \
+-dname "CN=$COMMON_NAME $CLUSTER_NAME cluster, OU=tfos, O=isima, L=Fremont, S=California, C=US" \
+-validity 9999
+
+# Create the public key for the cluster which is used to identify nodes.
+keytool -export -alias "${CLUSTER_NAME}_CLUSTER" -file "$CLUSTER_PUBLIC_CERT" -keystore "$KEY_STORE" \
+-storepass "$PASSWORD" -keypass "$PASSWORD" -noprompt
+
+# Import the identity of the cluster public cluster key into the trust store so that nodes can identify each other.
+keytool -import -v -trustcacerts -alias "${CLUSTER_NAME}_CLUSTER" -file "$CLUSTER_PUBLIC_CERT" -keystore "$TRUST_STORE" \
+-storepass "$PASSWORD" -keypass "$PASSWORD" -noprompt
+
+# Create the client key for CQL.
+keytool -genkey -keyalg RSA -alias "${CLUSTER_NAME}" -keystore "$KEY_STORE" -storepass "$PASSWORD" -keypass "$PASSWORD" \
+-dname "CN=$COMMON_NAME $CLUSTER_NAME cluster, OU=tfos, O=isima, L=Fremont, S=California, C=US" \
+-validity 9999
+
+# Create the public key for the client to identify itself.
+keytool -export -alias "${CLUSTER_NAME}" -file "$CLIENT_PUBLIC_CERT" -keystore "$KEY_STORE" \
+-storepass "$PASSWORD" -keypass "$PASSWORD" -noprompt
+
+# Import the identity of the client pub key into the trust store so nodes can identify this client.
+keytool -importcert -v -trustcacerts -alias "${CLUSTER_NAME}" -file "$CLIENT_PUBLIC_CERT" -keystore "$TRUST_STORE" \
+-storepass "$PASSWORD" -keypass "$PASSWORD" -noprompt
+
+# Include the default system trust store as well
+echo "Adding all public CA certificates to $TRUST_STORE, this can take a while..."
+for filename in /usr/share/ca-certificates/mozilla/*.crt; do
+    keytool -import -file "$filename" -alias CA"{$filename}" -keystore "$TRUST_STORE" -storepass "$PASSWORD" -noprompt 2>/dev/null
+done
+echo "Done adding all public CA certificates to $TRUST_STORE."
+
+keytool -importkeystore -srckeystore "$KEY_STORE" -destkeystore "$PKS_KEY_STORE" -deststoretype PKCS12 \
+-srcstorepass "$PASSWORD" -deststorepass "$PASSWORD"
+
+openssl pkcs12 -in "$PKS_KEY_STORE" -nokeys -out "$KEY_STORE_PATH/${CLUSTER_NAME}.cer.pem" -passin pass:$PASSWORD
+openssl pkcs12 -in "$PKS_KEY_STORE" -nodes -nocerts -out "$KEY_STORE_PATH/${CLUSTER_NAME}.key.pem" -passin pass:$PASSWORD

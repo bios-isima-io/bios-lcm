@@ -1,0 +1,87 @@
+# If one_shot tables are set, the process only maintains the specified tables and suspend
+# one_shot:
+#   - keyspace: tfos_d_8e9939f4503b3047a22ee723fe53cb67
+#     table: evt_f76b73c7330f325b92f98358df02b38f
+#   - keyspace: tfos_d_8e9939f4503b3047a22ee723fe53cb67
+#     table: evt_3dc893351e673841bf70cf5aff128168
+repair_intervals:
+  - keyspace_category: KEYSPACE_ADMIN
+    interval_seconds: 86400
+  - keyspace_category: KEYSPACE_DATA
+    interval_seconds: 345600
+  - keyspace_category: KEYSPACE_MISC
+    interval_seconds: 86400
+  - keyspace_category: CONTEXT
+    interval_seconds: 86400
+run_options:
+  steps_per_token: 1
+  concurrency: 1
+  nodetool_path: /opt/db/bin/nodetool
+  nodetool_initial_port: DB_JMX_PORT
+  nodetool_use_ssl: true
+  nodetool_credentials_file: /var/lib/bios-maintainer/jmxremote.password
+  db_port: 10109
+  db_credentials_file: /var/lib/bios-maintainer/db_credentials.yaml
+  db_client_use_ssl: true
+  db_cert_file: /var/lib/bios-maintainer/DB_CLUSTER_NAME.cer.pem
+  db_key_file: /var/lib/bios-maintainer/DB_CLUSTER_NAME.key.pem
+  garbagecollect_enabled: true
+  log_filename: /var/log/bios-maintainer/bios-maintainer.log
+  log_rotate_size: 20971520
+  log_backup_count: 16
+  progress_filename: /var/lib/bios-maintainer/progress/dbdozer_progress.yaml
+  output_file: /var/log/bios-maintainer/current.out
+  debug: false
+  # We can also put parameters to files as follows, but recommendation is to put status to the same file.
+  # output_file: /var/log/bios-maintainer/details/{timestamp}.{datacenter}.{node}.{keyspace}.out
+  dry_run: false
+  # backoff seconds for maintaining a keyspace that was terminated in the middle in the previous
+  # execution, default=14400
+  failure_backoff_seconds: 14400
+  status_collection_interval: 120
+  # command_timeout: 900
+  keypair_file: /var/lib/bios-maintainer/vm_user.id_rsa.pem
+  ssh_user: VM_USER
+  backup_days: [6]
+  backup_keyspaces:
+    - system
+    - system_schema
+    - tfos_admin
+    - tfos_bi_meta
+  bios_initial_endpoint: https://CLUSTER_DNS_NAME
+  bios_sysadmin_user: systemadmin@isima.io
+  bios_sysadmin_password: SYSTEMADMIN_PASSWORD
+  bios_db_status_signal: dbStatus
+  bios_db_tables_signal: dbTables
+  nodetool_initial_hosts: NODETOOL_HOSTS
+  host_data_file_directories: HOST_DATA_FILE_DIRECTORIES
+  table_info_collection_interval_seconds: 3600
+  ###############################
+  # DB rolling restart parameters
+  ###############################
+  db_restart_enabled: false
+  db_container_name: bios-storage
+  db_rolling_restart_gap_seconds: 60
+  db_restart_wait_timeout_seconds: 900
+  db_restart_interval_hours: 22
+  db_restart_allowed_time_range: 1900-2500
+  db_restart_pause_status_collection: true
+# lbsec_options:
+#   lb_hosts: LB_HOSTS
+#   lb_remote_resource_path: LB_REMOTE_RESOURCE_PATH
+#   lb_lookback_in_days: 7
+#   lb_run_frequency_in_hours: 24
+#   cluster_name: CLUSTER_SUBDOMAIN
+#   cloud_provider: CLOUD_PROVIDER
+#   cloud_region: CLOUD_REGION
+#   ip_blacklist_s3_access_key: IP_BLACKLIST_S3_ACCESS_KEY
+#   ip_blacklist_s3_secret_key: IP_BLACKLIST_S3_SECRET_KEY
+#   ip_blacklist_s3_region: IP_BLACKLIST_S3_REGION
+#   ip_blacklist_s3_bucket: IP_BLACKLIST_S3_BUCKET
+#   server_hosts: SERVER_HOSTS
+#   server_config_dir: SERVER_CONFIG_DIR
+#   whitelisted_ips: WHITELISTED_IPS
+#   whitelisted_uris: WHITELISTED_URIS
+#   ignore_lb_hosts_for_blacklisting: IGNORE_LB_HOSTS_FOR_BLACKLISTING
+#   slack_url_for_newly_blacklisted_ips: SLACK_URL_FOR_NEWLY_BLACKLISTED_IPS
+#   ip2location_api_key: IP2LOCATION_API_KEY

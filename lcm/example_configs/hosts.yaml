@@ -1,0 +1,38 @@
+---
+cloud: gcp
+
+hosts:
+  # Replace placeholders below with real IP addresses of VMs.
+  lcm:
+    ip: 127.0.0.1
+  signal-1:
+    ip: 127.0.0.1
+  analysis-1:
+    ip: 127.0.0.1
+  rollup-1:
+    ip: 127.0.0.1
+  lb-1:
+    ip: 127.0.0.1
+    public_ip: 34.85.199.89
+  compute-1:
+    ip: 127.0.0.1
+    # user and password are not needed if key-based ssh has been set up from LCM VM to other VMs.
+    # user: build
+    # password: buildPassword
+
+    # cloud can be overridden for specific hosts
+    cloud: aws
+
+roles:
+  compute:
+    - compute-1
+  lb:
+    - lb-1
+  lcm:
+    - lcm
+  load:
+    - compute-1
+  storage:
+    - signal-1
+    - analysis-1
+    - rollup-1

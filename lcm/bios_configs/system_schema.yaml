@@ -1,0 +1,2181 @@
+contexts:
+  - contextName: booleanToNumber
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: boolValue
+        type: Boolean
+      - attributeName: intValue
+        type: Integer
+    primaryKey:
+      - boolValue
+  - contextName: host
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: hostFriendlyName
+        type: String
+        default: None
+      - attributeName: role
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: subRole
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: cloud
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: ipAddress
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: numCpus
+        type: Integer
+      - attributeName: memoryGb
+        type: Integer
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+    primaryKey:
+      - hostName
+    features:
+      - featureName: byNumCpus
+        dimensions:
+          - numCpus
+        attributes:
+          - memoryGb
+          - hostFriendlyName
+          - role
+          - subRole
+          - cloud
+          - ipAddress
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+      - featureName: byRoleMemory
+        dimensions:
+          - role
+          - memoryGb
+        attributes:
+          - hostFriendlyName
+          - subRole
+          - numCpus
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+      - featureName: byRole
+        dimensions:
+          - role
+        attributes:
+          - memoryGb
+          - hostFriendlyName
+          - subRole
+          - numCpus
+          - cloud
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+      - featureName: bySubRole
+        dimensions:
+          - subRole
+        attributes:
+          - memoryGb
+          - hostFriendlyName
+          - role
+          - numCpus
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+      - featureName: byHostFriendlyNameCloud
+        dimensions:
+          - hostFriendlyName
+          - cloud
+        attributes:
+          - subRole
+          - memoryGb
+          - role
+          - numCpus
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+    auditEnabled: true
+  - contextName: mountpoint
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: mountpoint
+        type: String
+      - attributeName: diskPurpose
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: diskType
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+    primaryKey:
+      - mountpoint
+  - contextName: knownLogMessages
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: logMessagePart
+        type: String
+      - attributeName: serviceName
+        type: String
+      - attributeName: targetAlertLevel
+        type: Integer
+    primaryKey:
+      - logMessagePart
+  - contextName: firedAlert
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: alertKey
+        type: String
+      - attributeName: alertName
+        type: String
+      - attributeName: firstActivationTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: lastNotificationTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: lastReminderTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: lastActivationTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: activationCount
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: notificationCount
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+    primaryKey:
+      - alertKey
+    features:
+      - featureName: byAlertName
+        dimensions:
+          - alertName
+        attributes:
+          - firstActivationTime
+          - lastNotificationTime
+          - lastReminderTime
+          - lastActivationTime
+          - activationCount
+          - notificationCount
+        featureInterval: 300000
+        aggregated: true
+        indexed: true
+        indexType: ExactMatch
+    auditEnabled: true
+    ttl: 8640000000
+  - contextName: userMetaData
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: sessionId
+        type: String
+      - attributeName: browserWidth
+        type: Integer
+      - attributeName: browserHeight
+        type: Integer
+      - attributeName: cookieEnabled
+        type: Boolean
+        missingAttributePolicy: StoreDefaultValue
+        default: False
+      - attributeName: userAgent
+        type: String
+    primaryKey:
+      - sessionId
+    missingLookupPolicy: FailParentLookup
+    auditEnabled: False
+signals:
+  - signalName: alert
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: tenant
+        type: String
+      - attributeName: signal
+        type: String
+      - attributeName: feature
+        type: String
+      - attributeName: alert
+        type: String
+      - attributeName: condition
+        type: String
+      - attributeName: windowStartTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: windowLength
+        type: String
+      - attributeName: event
+        type: String
+      - attributeName: alertKey
+        type: String
+        default: ""
+      - attributeName: sentToSlack
+        type: String
+        allowedValues:
+          - NotConfigured
+          - None
+          - KnownLogs
+          - SentLow
+          - SentHigh
+          - UnableToSendLow
+          - UnableToSendHigh
+          - Silenced
+          - VeryOldAlert
+        default: None
+      - attributeName: details
+        type: String
+        default: ""
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - tenant
+            - signal
+            - feature
+            - alert
+            - condition
+            - alertKey
+            - sentToSlack
+          attributes: []
+          featureInterval: 300000
+  - signalName: cpuStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: cpuUsage
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+      - attributeName: userCpuUsage
+        type: Decimal
+        default: 0
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+      - attributeName: systemCpuUsage
+        type: Decimal
+        default: 0
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+      - attributeName: hostName
+        type: String
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+          attributes:
+            - cpuUsage
+            - userCpuUsage
+            - systemCpuUsage
+          featureInterval: 300000
+  - signalName: containers
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: tenant
+        type: String
+      - attributeName: name
+        type: String
+      - attributeName: cpuUsage
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+      - attributeName: memUsage
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+      - attributeName: pids
+        type: Integer
+      - attributeName: hostName
+        type: String
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - tenant
+            - name
+          attributes:
+            - cpuUsage
+            - memUsage
+            - pids
+          featureInterval: 300000
+  - signalName: memStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: bytesUsed
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesFree
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesTotal
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: hostName
+        type: String
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+          attributes:
+            - bytesUsed
+            - bytesFree
+            - bytesTotal
+          featureInterval: 300000
+  - signalName: appStatus
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: tenant
+        type: String
+      - attributeName: appName
+        type: String
+      - attributeName: logLevel
+        type: String
+      - attributeName: logCount
+        type: Integer
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - tenant
+            - appName
+            - logLevel
+          attributes:
+            - logCount
+          featureInterval: 300000
+  - signalName: diskStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: device
+        type: String
+        default: None
+      - attributeName: mountpoint
+        type: String
+        default: None
+      - attributeName: bytesUsed
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesFree
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesTotal
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+        - enrichmentName: mountpoint
+          foreignKey:
+            - mountpoint
+          missingLookupPolicy: StoreFillInValue
+          contextName: mountpoint
+          contextAttributes:
+            - attributeName: diskPurpose
+              fillIn: MISSING
+            - attributeName: diskType
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - device
+            - mountpoint
+            - diskPurpose
+            - diskType
+          attributes:
+            - bytesUsed
+            - bytesFree
+            - bytesTotal
+          featureInterval: 300000
+  - signalName: ioStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: device
+        type: String
+      - attributeName: mountpoint
+        type: String
+        default: None
+      - attributeName: numReads
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: numWrites
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: bytesRead
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesWritten
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: readLatencySum
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Microsecond
+      - attributeName: writeLatencySum
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Microsecond
+      - attributeName: numReqInProgress
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+        - enrichmentName: mountpoint
+          foreignKey:
+            - mountpoint
+          missingLookupPolicy: StoreFillInValue
+          contextName: mountpoint
+          contextAttributes:
+            - attributeName: diskPurpose
+              fillIn: MISSING
+            - attributeName: diskType
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - device
+            - mountpoint
+            - diskPurpose
+            - diskType
+          attributes:
+            - numReads
+            - numWrites
+            - bytesRead
+            - bytesWritten
+            - readLatencySum
+            - writeLatencySum
+            - numReqInProgress
+          featureInterval: 300000
+  - signalName: netStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: interface
+        type: String
+      - attributeName: bytesReceived
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesTransmitted
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: numPacketsReceived
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: numPacketsTransmitted
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: numReceiveErrors
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: numTransmitErrors
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - interface
+          attributes:
+            - bytesReceived
+            - bytesTransmitted
+            - numPacketsReceived
+            - numPacketsTransmitted
+            - numReceiveErrors
+            - numTransmitErrors
+          featureInterval: 300000
+  - signalName: exception
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: hostName
+        type: String
+      - attributeName: serviceType
+        type: String
+      - attributeName: serviceName
+        type: String
+      - attributeName: eventTimestamp
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: origEventTimestamp
+        type: String
+      - attributeName: severity
+        type: String
+        allowedValues:
+          - Debug
+          - Info
+          - Warning
+          - Error
+      - attributeName: origSeverity
+        type: String
+      - attributeName: tenant
+        type: String
+      - attributeName: logLocation
+        type: String
+      - attributeName: message
+        type: String
+      - attributeName: messageDigest
+        type: String
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+      ingestTimeLag:
+        - ingestTimeLagName: reportDelay
+          attribute: eventTimeStamp
+          as: reportDelay
+          tags:
+            category: Quantity
+            kind: Duration
+            unit: Millisecond
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+            - serviceType
+            - serviceName
+            - severity
+            - tenant
+          attributes: []
+          featureInterval: 300000
+  - signalName: lbRequest
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: eventTimestamp
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+      - attributeName: hostName
+        type: String
+      - attributeName: remoteAddress
+        type: String
+      - attributeName: method
+        type: String
+      - attributeName: uri
+        type: String
+      - attributeName: protocol
+        type: String
+      - attributeName: status
+        type: String
+      - attributeName: referer
+        type: String
+      - attributeName: statusUpstream
+        type: String
+      - attributeName: upstreamAddress
+        type: String
+      - attributeName: latencyConnect
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+      - attributeName: latencyHeader
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+      - attributeName: latencyRequest
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+      - attributeName: latencyResponse
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+      - attributeName: bytesRequest
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: bytesResponse
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+      - attributeName: tenant
+        type: String
+      - attributeName: user
+        type: String
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+      ingestTimeLag:
+        - ingestTimeLagName: reportDelay
+          attribute: eventTimeStamp
+          as: reportDelay
+          tags:
+            category: Quantity
+            kind: Duration
+            unit: Millisecond
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - tenant
+            - user
+            - method
+            - uri
+            - protocol
+            - status
+            - statusUpstream
+            - remoteAddress
+            - upstreamAddress
+          attributes:
+            - latencyConnect
+            - latencyHeader
+            - latencyRequest
+            - latencyResponse
+            - bytesRequest
+            - bytesResponse
+          featureInterval: 300000
+  - signalName: lbSocketStats
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: peerIp
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: DISTINCTCOUNT
+      - attributeName: socketState
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: hostName
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+      - attributeName: numSockets
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: Reject
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+            - attributeName: cloud
+        - enrichmentName: ip2geo
+          foreignKey:
+            - peerIp
+          missingLookupPolicy: StoreFillInValue
+          contextName: _ip2geo
+          contextAttributes:
+            - attributeName: city
+              fillIn: MISSING
+            - attributeName: country
+              fillIn: MISSING
+            - attributeName: continent
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - peerIp
+            - socketState
+            - hostName
+            - hostFriendlyName
+            - city
+            - country
+            - continent
+          attributes:
+            - numSockets
+          featureInterval: 300000
+  - signalName: dbStatus
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: isUp
+        type: Boolean
+      - attributeName: dbSize
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Gibibyte
+      - attributeName: numDbFiles
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: hostName
+        type: String
+    enrich:
+      enrichments:
+        - enrichmentName: host
+          foreignKey:
+            - hostName
+          missingLookupPolicy: StoreFillInValue
+          contextName: host
+          contextAttributes:
+            - attributeName: hostFriendlyName
+              fillIn: MISSING
+            - attributeName: role
+              fillIn: MISSING
+            - attributeName: subRole
+              fillIn: MISSING
+            - attributeName: cloud
+              fillIn: MISSING
+        - enrichmentName: booleanToNumber
+          foreignKey:
+            - isUp
+          missingLookupPolicy: StoreFillInValue
+          contextName: booleanToNumber
+          contextAttributes:
+            - attributeName: intValue
+              fillIn: -1
+              as: isUpInteger
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostFriendlyName
+            - role
+            - subRole
+            - cloud
+          attributes:
+            - dbSize
+            - numDbFiles
+          featureInterval: 300000
+  - signalName: dbTables
+    missingAttributePolicy: StoreDefaultValue
+    attributes:
+      - attributeName: hostName
+        type: String
+        missingAttributePolicy: Reject
+        tags:
+          category: Dimension
+      - attributeName: ipAddress
+        type: String
+        missingAttributePolicy: Reject
+        tags:
+          category: Dimension
+      - attributeName: keyspace
+        type: String
+        missingAttributePolicy: Reject
+        tags:
+          category: Dimension
+      - attributeName: table
+        type: String
+        missingAttributePolicy: Reject
+        tags:
+          category: Dimension
+      - attributeName: tenant
+        type: String
+        tags:
+          category: Dimension
+        default: MISSING
+      - attributeName: streamType
+        type: String
+        tags:
+          category: Dimension
+        allowedValues:
+          - signal
+          - context
+          - rollup
+          - index
+          - view
+          - none
+        default: none
+      - attributeName: stream
+        type: String
+        tags:
+          category: Dimension
+        default: ""
+      - attributeName: version
+        type: Integer
+        tags:
+          category: Dimension
+        default: 0
+      - attributeName: spaceLive
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: spaceTotal
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: spaceSnapshots
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: totalOffHeapMemory
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: sstables
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: sstableCompressionRatio
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Ratio
+        default: 0
+      - attributeName: partitions
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: memtableCells
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: memtableDataSize
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: memtableOffHeapMemory
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: memtableSwitchCount
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: localReads
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: localReadLatency
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+        default: 0
+      - attributeName: localWrites
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: localWriteLatency
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Millisecond
+        default: 0
+      - attributeName: pendingFlushes
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: percentRepaired
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Percent
+        default: 0
+      - attributeName: bloomFilterFalsePositives
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: bloomFilterFalseRatio
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Ratio
+        default: 0
+      - attributeName: bloomFilterSpaceUsed
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: bloomFilterOffHeapMemory
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: indexSummaryOffHeapMemory
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: compressionMetadataOffHeapMemory
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: compactedPartitionMinimumBytes
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: compactedPartitionMaximumBytes
+        type: Integer
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: compactedPartitionMeanBytes
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: DataSize
+          unit: Byte
+        default: 0
+      - attributeName: averageLiveCellsPerSlice
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: maximumLiveCellsPerSlice
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: averageTombstonesPerSlice
+        type: Decimal
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: maximumTombstonesPerSlice
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: droppedMutations
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+        default: 0
+      - attributeName: ttl
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Second
+        default: 0
+      - attributeName: gcGraceSeconds
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Duration
+          unit: Second
+        default: 0
+    postStorageStage:
+      features:
+        - featureName: byMultiple
+          dimensions:
+            - hostName
+            - ipAddress
+            - keyspace
+            - table
+            - tenant
+            - streamType
+            - stream
+            - version
+          attributes:
+            - spaceLive
+            - spaceTotal
+            - spaceSnapshots
+            - totalOffHeapMemory
+            - sstables
+            - sstableCompressionRatio
+            - partitions
+            - memtableCells
+            - memtableDataSize
+            - memtableOffHeapMemory
+            - memtableSwitchCount
+            - localReads
+            - localReadLatency
+            - localWrites
+            - localWriteLatency
+            - pendingFlushes
+            - percentRepaired
+            - bloomFilterFalsePositives
+            - bloomFilterFalseRatio
+            - bloomFilterSpaceUsed
+            - bloomFilterOffHeapMemory
+            - indexSummaryOffHeapMemory
+            - compressionMetadataOffHeapMemory
+            - compactedPartitionMinimumBytes
+            - compactedPartitionMaximumBytes
+            - compactedPartitionMeanBytes
+            - averageLiveCellsPerSlice
+            - maximumLiveCellsPerSlice
+            - averageTombstonesPerSlice
+            - maximumTombstonesPerSlice
+            - droppedMutations
+            - ttl
+            - gcGraceSeconds
+          featureInterval: 300000
+  - signalName: clickEvent
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: sessionId
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: pageDomain
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: pageURL
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: pageTitle
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: referrer
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: timestamp
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+        missingAttributePolicy: StoreDefaultValue
+        default: 0
+      - attributeName: eventLabel
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: rightSection
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: mainSection
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: leftSection
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: WORD_CLOUD
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+      - attributeName: ipAddress
+        type: String
+        tags:
+          category: Dimension
+          firstSummary: DISTINCTCOUNT
+        missingAttributePolicy: StoreDefaultValue
+        default: MISSING
+    enrich:
+      enrichments:
+        - enrichmentName: userEventMetadata
+          foreignKey:
+            - sessionId
+          missingLookupPolicy: Reject
+          contextName: userMetaData
+          contextAttributes:
+            - attributeName: browserWidth
+            - attributeName: browserHeight
+        - enrichmentName: ip2geo
+          foreignKey:
+            - ipAddress
+          missingLookupPolicy: StoreFillInValue
+          contextName: _ip2geo
+          contextAttributes:
+            - attributeName: city
+              fillIn: MISSING
+            - attributeName: country
+              fillIn: MISSING
+            - attributeName: continent
+              fillIn: MISSING
+            - attributeName: latitude
+              fillIn: 0.0
+            - attributeName: longitude
+              fillIn: 0.0
+            - attributeName: timezone
+              fillIn: MISSING
+    postStorageStage:
+      features:
+        - featureName: sessionId
+          dimensions:
+            - sessionId
+          attributes:
+            - browserWidth
+            - browserHeight
+          featureInterval: 300000
+        - featureName: leftSection
+          dimensions:
+            - leftSection
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+        - featureName: referrer
+          dimensions:
+            - referrer
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+        - featureName: rightSection
+          dimensions:
+            - rightSection
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+        - featureName: mainSection
+          dimensions:
+            - mainSection
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+        - featureName: eventLabel
+          dimensions:
+            - eventLabel
+          attributes:
+            - browserWidth
+            - browserHeight
+          featureInterval: 300000
+        - featureName: city
+          dimensions:
+            - city
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+        - featureName: country
+          dimensions:
+            - country
+          attributes:
+            - browserWidth
+            - browserHeight
+          featureInterval: 300000
+        - featureName: continent
+          dimensions:
+            - continent
+          attributes:
+            - browserWidth
+            - browserHeight
+          featureInterval: 300000
+        - featureName: timezone
+          dimensions:
+            - timezone
+          attributes:
+            - browserWidth
+            - browserHeight
+            - timestamp
+            - latitude
+            - longitude
+          featureInterval: 300000
+  - signalName: userException
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: sessionId
+        type: String
+      - attributeName: pageDomain
+        type: String
+      - attributeName: pageURL
+        type: String
+      - attributeName: pageTitle
+        type: String
+      - attributeName: Referrer
+        type: String
+      - attributeName: ipAddress
+        type: String
+      - attributeName: Timestamp
+        type: Decimal
+      - attributeName: exceptionType
+        type: String
+      - attributeName: errorText
+        type: String
+    enrich:
+      enrichments:
+        - enrichmentName: userEventMetadata
+          foreignKey:
+            - sessionId
+          missingLookupPolicy: Reject
+          contextName: userMetaData
+          contextAttributes:
+            - attributeName: browserWidth
+            - attributeName: browserHeight
+            - attributeName: cookieEnabled
+            - attributeName: userAgent
+        - enrichmentName: ip2geo
+          foreignKey:
+            - ipAddress
+          missingLookupPolicy: StoreFillInValue
+          contextName: _ip2geo
+          contextAttributes:
+            - attributeName: city
+              fillIn: MISSING
+            - attributeName: country
+              fillIn: MISSING
+            - attributeName: continent
+              fillIn: MISSING
+            - attributeName: latitude
+              fillIn: 0.0
+            - attributeName: longitude
+              fillIn: 0.0
+            - attributeName: timezone
+              fillIn: MISSING
+importDataProcessors:
+  - processorName: ObserveUtils
+    encoding: plain
+    code: OBSERVE_UTILS_PLACEHOLDER_TO_BE_REPLACED
+importDestinations:
+  - importDestinationId: biosLogin
+    importDestinationName: biosLogin
+    type: Bios
+    endpoint: https://CLUSTER_DNS_NAME
+  - importDestinationId: biosDestinationForLoginWebhooks
+    importDestinationName: biosDestinationForLoginWebhooks
+    type: Bios
+    endpoint: https://CLUSTER_DNS_NAME
+    authentication:
+      type: Login
+      user: ingest@isima.io
+      password: ingest
+importSources:
+  - importSourceId: monWebhook
+    importSourceName: nodestats
+    type: Webhook
+    webhookPath: /nodestats
+    authentication:
+      type: HttpHeadersPlain
+      userHeader: x-bios-user
+      passwordHeader: x-bios-password
+  - importSourceId: alertWebhook
+    importSourceName: alerts
+    type: Webhook
+    webhookPath: /alerts
+    authentication:
+      type: InMessage
+      inMessageUserAttribute: user
+      inMessagePasswordAttribute: password
+  - importSourceId: ipxlAnalytics
+    importSourceName: ipxl_Analytics
+    type: Webhook
+    webhookPath: /ipxl
+importFlowSpecs:
+  - importFlowId: alert
+    importFlowName: alert
+    sourceDataSpec:
+      importSourceId: alertWebhook
+      webhookSubPath: /alert
+      payloadType: Json
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: alert
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeName: tenantName
+          as: tenant
+        - sourceAttributeName: signalName
+          as: signal
+        - sourceAttributeName: featureName
+          as: feature
+        - sourceAttributeName: alertName
+          as: alert
+        - sourceAttributeName: condition
+        - sourceAttributeName: windowStartTime
+          processes:
+            - processorName: ObserveUtils
+              method: window_start_time_to_millis
+          as: windowStartTime
+        - sourceAttributeName: windowLength
+        - sourceAttributeName: event
+          processes:
+            - processorName: ObserveUtils
+              method: json_to_string
+          as: event
+        - sourceAttributeNames:
+            - domainName
+            - signalName
+            - alertName
+            - condition
+            - windowStartTime
+            - windowLength
+            - event
+          processes:
+            - processorName: ObserveUtils
+              method: process_alert
+          transforms:
+            - rule: 'lambda out: out["alertKey"]'
+              as: alertKey
+            - rule: 'lambda out: out["sentToSlack"]'
+              as: sentToSlack
+            - rule: 'lambda out: out["details"]'
+              as: details
+  - importFlowId: cpuStats
+    importFlowName: cpuStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /cpu
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: cpuStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: cpu_p
+          transforms:
+            - rule: "lambda usage: 100.0 if usage > 100 else usage"
+              as: cpuUsage
+        - sourceAttributeName: user_p
+          transforms:
+            - rule: "lambda usage: 100.0 if usage > 100 else usage"
+              as: userCpuUsage
+        - sourceAttributeName: system_p
+          transforms:
+            - rule: "lambda usage: 100.0 if usage > 100 else usage"
+              as: systemCpuUsage
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: memStats
+    importFlowName: memStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /mem
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: memStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: Mem.used
+          transforms:
+            - rule: "lambda mem: int(mem * 1024)"
+              as: bytesUsed
+        - sourceAttributeName: Mem.free
+          transforms:
+            - rule: "lambda mem: int(mem * 1024)"
+              as: bytesFree
+        - sourceAttributeName: Mem.total
+          transforms:
+            - rule: "lambda mem: int(mem * 1024)"
+              as: bytesTotal
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: diskStats
+    importFlowName: diskStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /disk
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: diskStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: dev_name
+          as: device
+        - sourceAttributeName: mountpoint
+          as: mountpoint
+        - sourceAttributeName: used
+          transforms:
+            - rule: "lambda bytes: int(bytes * 1024)"
+              as: bytesUsed
+        - sourceAttributeName: avail
+          transforms:
+            - rule: "lambda bytes: int(bytes * 1024)"
+              as: bytesFree
+        - sourceAttributeName: size
+          transforms:
+            - rule: "lambda bytes: int(bytes * 1024)"
+              as: bytesTotal
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: appStatus
+    importFlowName: appStatus
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /app
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: appStatus
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostName
+        - sourceAttributeName: appName
+        - sourceAttributeName: logCount
+        - sourceAttributeName: logLevel
+        - sourceAttributeName: tenant
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: containers
+    importFlowName: containers
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /containers
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: containers
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: tenant
+          as: tenant
+        - sourceAttributeName: name
+          as: name
+        - sourceAttributeName: cpu_usage
+          as: cpuUsage
+        - sourceAttributeName: mem_usage
+          as: memUsage
+        - sourceAttributeName: pids
+          as: pids
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: ioStats
+    importFlowName: ioStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /io
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: ioStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: device
+          as: device
+        - sourceAttributeName: mountpoint
+          as: mountpoint
+        - sourceAttributeName: numReads
+          as: numReads
+        - sourceAttributeName: numWrites
+          as: numWrites
+        - sourceAttributeName: bytesRead
+          as: bytesRead
+        - sourceAttributeName: bytesWritten
+          as: bytesWritten
+        - sourceAttributeName: readLatencySum
+          as: readLatencySum
+        - sourceAttributeName: writeLatencySum
+          as: writeLatencySum
+        - sourceAttributeName: numReqInProgress
+          as: numReqInProgress
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: netStats
+    importFlowName: netStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /net
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: netStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: interface
+          as: interface
+        - sourceAttributeName: rx.bytes
+          as: bytesReceived
+        - sourceAttributeName: tx.bytes
+          as: bytesTransmitted
+        - sourceAttributeName: rx.packets
+          as: numPacketsReceived
+        - sourceAttributeName: tx.packets
+          as: numPacketsTransmitted
+        - sourceAttributeName: rx.errors
+          as: numReceiveErrors
+        - sourceAttributeName: tx.errors
+          as: numTransmitErrors
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: reportTime
+  - importFlowId: exception
+    importFlowName: exception
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /exception
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: exception
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: service_type
+          as: serviceType
+        - sourceAttributeNames:
+            - service_name
+            - service_type
+          processes:
+            - processorName: ObserveUtils
+              method: first_or_second
+          as: serviceName
+        - sourceAttributeName: timestamp
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000)"
+              as: eventTimestamp
+        - sourceAttributeName: time
+          as: origEventTimestamp
+        - sourceAttributeName: severity
+        - sourceAttributeName: orig_severity
+          as: origSeverity
+        - sourceAttributeName: tenant
+        - sourceAttributeName: log_location
+          as: logLocation
+        - sourceAttributeName: message
+        - sourceAttributeNames:
+            - orig_severity
+            - hostname
+            - log_location
+            - message
+          processes:
+            - processorName: ObserveUtils
+              method: get_log_message_digest
+          as: messageDigest
+  - importFlowId: lbrequest
+    importFlowName: lbrequest
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /lbrequest
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: lbrequest
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: hostname
+          as: hostName
+        - sourceAttributeName: date
+          transforms:
+            - rule: "lambda epoch_s: int(epoch_s * 1000) if epoch_s else 0"
+              as: eventTimestamp
+        - sourceAttributeName: remote_addr
+          as: remoteAddress
+        - sourceAttributeName: request_method
+          as: method
+        - sourceAttributeName: request_uri
+          as: uri
+        - sourceAttributeName: server_protocol
+          as: protocol
+        - sourceAttributeName: status
+          as: status
+        - sourceAttributeName: bytes_sent
+          transforms:
+            - rule: "lambda num_bytes: int(num_bytes) if num_bytes else 0"
+              as: bytesRequest
+        - sourceAttributeName: http_referer
+          as: referer
+        - sourceAttributeName: upstream_status
+          as: statusUpstream
+        - sourceAttributeName: upstream_addr
+          as: upstreamAddress
+        - sourceAttributeName: request_time
+          transforms:
+            - rule: "lambda lat: int(float(lat) * 1000) if lat else 0"
+              as: latencyRequest
+        - sourceAttributeName: upstream_response_time
+          transforms:
+            - rule: "lambda lat: int(float(lat) * 1000) if lat else 0"
+              as: latencyResponse
+        - sourceAttributeName: upstream_response_length
+          transforms:
+            - rule: "lambda num_bytes: int(num_bytes) if num_bytes else 0"
+              as: bytesResponse
+        - sourceAttributeName: upstream_connect_time
+          transforms:
+            - rule: "lambda lat: int(float(lat) * 1000) if lat else 0"
+              as: latencyConnect
+        - sourceAttributeName: upstream_header_time
+          transforms:
+            - rule: "lambda lat: int(float(lat) * 1000) if lat else 0"
+              as: latencyHeader
+        - sourceAttributeName: http_x_tenant_name
+          as: tenant
+        - sourceAttributeName: http_x_user_name
+          as: user
+  - importFlowId: lbSocketStats
+    importFlowName: lbSocketStats
+    sourceDataSpec:
+      importSourceId: monWebhook
+      payloadType: Json
+      webhookSubPath: /sock
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: lbSocketStats
+    dataPickupSpec:
+      attributeSearchPath: "*"
+      attributes:
+        - sourceAttributeName: num_sockets
+          as: numSockets
+        - sourceAttributeName: peer_ip
+          as: peerIp
+        - sourceAttributeName: state
+          as: socketState
+        - sourceAttributeName: hostname
+          as: hostName
+  - importFlowId: clickEventFlow
+    importFlowName: clickEventFlow
+    sourceDataSpec:
+      importSourceId: ipxlAnalytics
+      payloadType: Json
+    destinationDataSpec:
+      importDestinationId: biosDestinationForLoginWebhooks
+      type: Signal
+      name: clickEvent
+    dataPickupSpec:
+      filters:
+        - sourceAttributeName: type
+          filter: lambda value:value == 'clickEvent'
+      attributeSearchPath: "events/*"
+      attributes:
+        - sourceAttributeName: sessionId
+        - sourceAttributeName: pageDomain
+        - sourceAttributeName: pageURL
+        - sourceAttributeName: pageTitle
+        - sourceAttributeName: referrer
+        - sourceAttributeName: timestamp
+        - sourceAttributeName: eventLabel
+        - sourceAttributeName: rightSection
+        - sourceAttributeName: mainSection
+        - sourceAttributeName: leftSection
+        - sourceAttributeName: ${x-real-ip}
+          as: ipAddress
+  - importFlowId: userExceptionFlow
+    importFlowName: userExceptionFlow
+    sourceDataSpec:
+      importSourceId: ipxlAnalytics
+      payloadType: Json
+    destinationDataSpec:
+      importDestinationId: biosDestinationForLoginWebhooks
+      type: Signal
+      name: userException
+    dataPickupSpec:
+      filters:
+        - sourceAttributeName: type
+          filter: lambda value:value == 'exception'
+      attributeSearchPath: "events/*"
+      attributes:
+        - sourceAttributeName: sessionId
+        - sourceAttributeName: pageDomain
+        - sourceAttributeName: pageURL
+        - sourceAttributeName: pageTitle
+        - sourceAttributeName: Referrer
+        - sourceAttributeName: Timestamp
+        - sourceAttributeName: ${x-real-ip}
+          as: ipAddress
+        - sourceAttributeName: exceptionType
+        - sourceAttributeName: errorText
+  - importFlowId: userMetadata
+    importFlowName: userMetadata
+    sourceDataSpec:
+      importSourceId: ipxlAnalytics
+      payloadType: Json
+    destinationDataSpec:
+      importDestinationId: biosDestinationForLoginWebhooks
+      type: Context
+      name: userMetaData
+    dataPickupSpec:
+      filters:
+        - sourceAttributeName: type
+          filter: lambda value:value == 'eventMetadata'
+      attributeSearchPath: "events/*"
+      attributes:
+        - sourceAttributeName: sessionId
+        - sourceAttributeName: browserWidth
+        - sourceAttributeName: browserHeight
+        - sourceAttributeName: cookieEnabled
+        - sourceAttributeName: userAgent

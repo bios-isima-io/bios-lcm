@@ -1,0 +1,211 @@
+@startuml bios_container_lifecycle
+title Install, Upgrade, Repair and Restore bi(OS) In-Depth
+
+[*] --> Main
+Main: The driver function
+Main --> install_bios
+Main --> upgrade_bios
+Main --> repair_bios
+Main --> restore_bios
+
+' Main function descriptions.
+upgrade_bios: Upgrades the bios cluster\nand it's configuration.
+install_bios: Performs a fresh bios\ninstallation on a cluster.
+repair_bios: Repairs broken cluster nodes\nwithout change in bios version.
+restore_bios: Restores the cluster to a previously\ninstalled version of bios.
+
+
+'''' UPGRADE ''''
+upgrade_bios --> upgrade_bios_containers
+
+state upgrade_bios_containers{
+  return_upgrade: Returns the bios version upgraded to*
+
+  gather_status: Checks status of the bios container.
+  gather_status -[dotted]-> check_bios_container
+
+  gather_status --> skip_node   : Greater version
+  gather_status --> check_node  : Equal version
+  gather_status --> order_upgrade_nodes : Lower or no version
+
+  check_node: Check node health.
+  check_node -[dotted]-> bios_healthy
+
+  check_node --> skip_node    : Running well
+  check_node --> order_upgrade_nodes  : Broken
+
+  skip_node: Skip upgrade.
+  order_upgrade_nodes: Sort nodes as per\nspecified order.
+
+  pull_bios_image: In parallel, pull the new\nbios image on all nodes.
+  order_upgrade_nodes --> pull_bios_image
+
+  update_resources: Read upgrade config and update\nresources on the node.
+  pull_bios_image --> update_resources
+
+  update_resources --> perform_upgrade
+
+  perform_upgrade: Upgrade the bios container.
+  perform_upgrade -[dotted]-> upgrade_bios_node
+
+  cleanup_upgrade: Cleanup files from old installations.
+  perform_upgrade --> cleanup_upgrade : Success
+  cleanup_upgrade --> return_upgrade
+
+}
+
+state check_bios_container{
+  return_check: Returns the bios container state\nand version number.
+  state repair <<fork>>
+
+  check_container_state: Check if node has a bios container.
+  check_container_state --> return_check : Container exists
+  check_container_state --> repair : Container does not exists
+  repair --> return_check : Repair not requested, return None
+  repair -[dashed]-> repair_bios_node : Repair requested
+}
+
+state upgrade_bios_node {
+
+  stop_old_bios : Stop the old\nbios container.
+  start_new_bios: Start the upgraded\nbios container.
+  rollback: Reinstate the old\nbios container.
+  cleanup_containers: Cleanup very old containers.
+  finish: Return success.
+
+  stop_old_bios --> start_new_bios
+  start_new_bios --> rollback    : Failure
+  start_new_bios --> cleanup_containers     : Success
+  cleanup_containers --> finish
+
+  rollback -[dotted]-> start_bios_container
+  stop_old_bios -[dotted]-> stop_bios_container
+  start_new_bios -[dotted]-> run_bios_on_host
+
+}
+
+state bios_healthy {
+}
+
+state stop_bios_container {
+  return_stop: The stopped container name.
+}
+
+state start_bios_container {
+  attempt_start: Perform a docker start.
+  check_container_health: Check if the bios container usable.
+
+  check_container_health --> attempt_start : Healthy
+  check_container_health -[dashed]-> handle_failed_start : Broken
+  check_container_health -[dotted]-> bios_healthy
+
+  attempt_start --> attempt_start : Make 3 attempts
+  attempt_start --> return_success : Success
+  attempt_start -[dashed]-> handle_failed_start : Failure
+}
+
+state run_bios_on_host {
+  pull_image: Pull the requested image if needed.
+  configure_bios: Copy cacerts and set other server parameters.
+}
+
+state handle_failed_start {
+  print_message: Print failure message.
+  check_input_parameter: Check if repair requested.
+
+  print_message --> check_input_parameter
+  check_input_parameter -[dashed]-> repair_bios_node : Repair requested
+  check_input_parameter --> return_fail
+}
+
+state repair_bios_node {
+
+  check_availability: Check if the requested\nversion is available.
+  success_repair: Report successful repair.
+  failure_repair: Report failed repair.
+
+  check_availability --> attempt_run
+
+  attempt_run: Create a new bios container\nwith the same resources.
+  attempt_run -[dotted]-> run_bios_on_host
+
+  attempt_run --> success_repair : Success
+  attempt_run --> failure_repair : Failed
+
+}
+
+
+'''' REPAIR ''''
+
+state repair_bios{
+  order_repair_nodes: Sort nodes as per\nspecified order.
+  attempt_repair: try to repair node if needed.
+
+  order_repair_nodes --> attempt_repair
+  attempt_repair -[dotted]-> diagnose_and_repair_bios_node
+
+}
+
+state diagnose_and_repair_bios_node{
+
+  check_status: Checks if bios container exists,\nand its status.
+  launch_bios: Try running the bios\ncontainer upon health check.
+  check_deployment: Check state of existing bios container.
+
+  check_status -[dotted]-> check_bios_container
+  check_status --> launch_bios : Exited
+  check_status --> check_deployment : Running
+
+  launch_bios -[dotted]-> start_bios_container
+  check_deployment -[dotted]-> bios_healthy
+  check_deployment --> launch_bios : Broken container
+  check_deployment --> return_ok : Container running fine
+
+}
+
+
+'''' RESTORE ''''
+
+state restore_bios{
+order_restore_nodes: Sort nodes as per\nspecified order.
+check_eligibility: Check if node can be restored\nto requested version.
+
+order_restore_nodes --> check_eligibility
+check_eligibility --> return_inaction : Partial restore disallowed
+check_eligibility -[dashed]-> restore_bios_node : All nodes eligiible or partial restore allowed
+
+}
+
+state restore_bios_node {
+  stop_current_bios: Stop current bios if it exists.
+  return_restore: Report Success.
+  rollback_restore: Rename the defunct new container\nand start back old bios if present.
+  start_old_bios: Check old bios health and try to start it.
+
+  stop_current_bios --> start_old_bios
+
+  start_old_bios --> return_restore : Success
+  start_old_bios --> rollback_restore : Failure
+
+  start_old_bios -[dotted]->  diagnose_and_repair_bios_node
+  stop_current_bios -[dotted]-> stop_bios_container
+  rollback_restore -[dotted]-> start_bios_container
+
+}
+
+
+' Function descriptions.
+upgrade_bios_containers: Upgrades the bios containers on all the storage nodes.
+
+check_bios_container: Checks if there is a bios container on the host\nand returns its status and version. If not present,\nrestores the most recent stable bios installation.
+bios_healthy: Checks if the current (or requested version)\nbios container is marked as ready.
+upgrade_bios_node: Replaces the running bios container with an upgraded one.
+stop_bios_container: Stops the running bios version and\nsuffixes it with its version number.
+start_bios_container: Tries to start an existing bios container.
+run_bios_on_host: Creates, deploys, and configures a new bios container.
+handle_failed_start: Either returns, or tries torepair a bios\ncontainer which failed to start.
+repair_bios_node: Repairs bios by creating a new container with the most\nrecent version of bios usable, or the one requested.
+diagnose_and_repair_bios_node: Checks bios health on the host and attempts\nto repair it in case something is wrong.
+restore_bios_node: Restores a cluster node.
+
+@enduml

@@ -1,0 +1,349 @@
+max_logs_to_show: 5
+max_log_digests_to_show: 5
+max_lines_per_log: 20
+logs_period_seconds: 330
+# log_digests_period_minutes must be a multiple of 5
+log_digests_period_minutes: 10
+
+# The following *_days numbers can be decimals (not just integers),
+# and should be less than 100 days.
+# *_silence_days: Amount of time to silence an alertKey between notifications.
+#     Only 1 notification is sent for a specific alertKey, which includes alertName and relevant
+#     group-by attributes such as host, tenant, container / service name, mountpoint, and status.
+# *_caution_days: If an alertKey persists for longer than this period, subsequent notifications
+#     for this alertKey include a caution notice for seeking attention.
+default_periods:
+  high_alert_silence_days: 1
+  high_alert_caution_days: 3
+  low_alert_silence_days: 2
+  low_alert_caution_days: 7
+  # When a high alert is silenced, how many reminders to send as a low notification,
+  #     before the next high notification is sent after high_alert_silence_days.
+  high_alert_low_reminders: 2
+# The above defaults can be overridden on a per-alert basis below.
+# When overriding these values in a single alert, skip the *_alert_ prefix and just use
+# "silence_days", "caution_days", and "low_reminders".
+
+# Time zone name format is from pytz; to get a list run: import pytz; print(pytz.all_timezones)
+# Upto 3 time zones can be specified, use empty string to skip; UTC is used if none are specified.
+time_zone_for_start_time_1: US/Pacific
+time_zone_for_start_time_2: Asia/Kolkata
+time_zone_for_start_time_3: ""
+
+# Naming rule for alerts:
+# 1. Use suffix "1" or "2" to indicate level of alert to be sent to Slack.
+#       1 for low, 2 for high, absent for no alert sent to Slack.
+# 2. Use prefix "log" for alerts based on logs from exception signal.
+
+# Fields in alerts:
+# The feature and alert definitions below follow the same structure as
+# the usual features and alerts in bi(OS) with the following exceptions:
+# (A) "webhookUrl", "userName", and "password" fields are added automatically.
+# (B) Optional fields applicable only to this file:
+#     1. "reports": array/list; links to the given reports are added to the Slack alert.
+#     2. "alert_periods": dictionary; overrides any of the "default_periods" items for this alert.
+signals:
+  cpuStats:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+      attributes: [cpuUsage]
+      featureInterval: 300000
+      alerts:
+        - alertName: highCpuUsage1
+          condition: ((sum(cpuUsage) / count()) >= 80)
+          reports:
+            - reportId: 15.CPU_Usage_by_Host
+              durationMinutes: 60
+            - reportId: 14.Container_CPU_Usage
+              durationMinutes: 60
+          alert_periods:
+            silence_days: 1
+            caution_days: 2
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+      attributes: [cpuUsage]
+      featureInterval: 900000
+      alerts:
+        - alertName: highCpuUsage2
+          condition: ((sum(cpuUsage) / count()) >= 90)
+          reports:
+            - reportId: 15.CPU_Usage_by_Host
+              durationMinutes: 60
+            - reportId: 14.Container_CPU_Usage
+              durationMinutes: 60
+          alert_periods:
+            silence_days: 0.2
+            caution_days: 0.5
+            low_reminders: 2
+  containers:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+        - name
+        - tenant
+      attributes: [memUsage]
+      featureInterval: 300000
+      alerts:
+        - alertName: highMemoryUsage1
+          condition: ((((name == 'bios') or (name == 'bioslb')) or (name contains 'apps')) and ((sum(memUsage) / count()) >= 98))
+          reports:
+            - reportId: Container_Memory_Usage
+              durationMinutes: 60
+            - reportId: 13.Memory_Utilization
+              durationMinutes: 60
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+        - name
+        - tenant
+      attributes: [memUsage]
+      featureInterval: 900000
+      alerts:
+        - alertName: highMemoryUsage2
+          condition: ((((name == 'bios') or (name == 'bioslb')) or (name contains 'apps')) and ((sum(memUsage) / count()) >= 99))
+          reports:
+            - reportId: Container_Memory_Usage
+              durationMinutes: 60
+            - reportId: 13.Memory_Utilization
+              durationMinutes: 60
+  appStatus:
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+        - tenant
+        - appName
+        - logLevel
+      attributes: [logCount]
+      featureInterval: 900000
+      alerts:
+        - alertName: biosHeartbeat15Min1
+          condition: (((appName == 'bios') and (logLevel == 'Info')) and (count() <= 15))
+          reports:
+            - reportId: Heartbeat_bios
+              durationMinutes: 60
+            - reportId: Heartbeat_All
+              durationMinutes: 180
+    - featureName: alertFeatureLong2
+      dimensions:
+        - hostFriendlyName
+        - tenant
+        - appName
+        - logLevel
+      attributes: [logCount]
+      featureInterval: 1800000
+      alerts:
+        - alertName: biosHeartbeat30Min2
+          condition: (((appName == 'bios') and (logLevel == 'Info')) and (count() <= 30))
+          reports:
+            - reportId: Heartbeat_bios
+              durationMinutes: 60
+            - reportId: Heartbeat_All
+              durationMinutes: 180
+  diskStats:
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+        - device
+        - mountpoint
+        - diskPurpose
+      attributes:
+        - bytesUsed
+        - bytesTotal
+      featureInterval: 300000
+      alerts:
+        - alertName: highDiskSpaceUsage1
+          condition: (((sum(bytesUsed) * 100.0) / sum(bytesTotal)) >= 70)
+          reports:
+            - reportId: Disk_Space_Usage
+              durationMinutes: 360
+        - alertName: highDiskSpaceUsage2
+          condition: (((sum(bytesUsed) * 100.0) / sum(bytesTotal)) >= 80)
+          reports:
+            - reportId: Disk_Space_Usage
+              durationMinutes: 360
+  ioStats:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+        - device
+        - mountpoint
+        - diskPurpose
+      attributes:
+        - numReqInProgress
+        - readLatencySum
+        - writeLatencySum
+        - numReads
+        - numWrites
+      featureInterval: 300000
+      alerts:
+        # Latency numbers in ioStats signal are in microseconds
+        - alertName: highDiskIoReadLatency1
+          condition: (((diskPurpose == 'data') or (diskPurpose == 'commitLog')) and ((sum(readLatencySum) / sum(numReads)) >= 40000))
+          reports:
+            - reportId: Disk_Read_Latency
+              durationMinutes: 60
+        - alertName: highDiskIoWriteLatency1
+          condition: (((diskPurpose == 'data') or (diskPurpose == 'commitLog')) and ((sum(writeLatencySum) / sum(numWrites)) >= 40000))
+          reports:
+            - reportId: Disk_Write_Latency
+              durationMinutes: 60
+  netStats:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+      attributes:
+        - numReceiveErrors
+        - numTransmitErrors
+      featureInterval: 300000
+      alerts:
+        - alertName: highNetworkErrors1
+          condition: ((sum(numReceiveErrors) >= 100) or (sum(numTransmitErrors) >= 100))
+          reports:
+            - reportId: Network_Errors
+              durationMinutes: 60
+  exception:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+        - severity
+        - serviceType
+        - serviceName
+      attributes: []
+      featureInterval: 300000
+      alerts:
+        - alertName: logErrorBios1
+          condition: (((serviceName == 'bios') and (severity == 'Error')) and (count() >= 1))
+          alert_periods:
+            silence_days: 0.04
+        - alertName: logErrorBios2
+          condition: (((serviceName == 'bios') and (severity == 'Error')) and (count() >= 30))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logErrorBiosdb1
+          condition: (((serviceName == 'bios-storage') and (severity == 'Error')) and (count() >= 10))
+          alert_periods:
+            silence_days: 0.04
+        - alertName: logErrorBiosdb2
+          condition: (((serviceName == 'bios-storage') and (severity == 'Error')) and (count() >= 100))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logErrorBioslb1
+          condition: (((serviceName == 'bioslb') and (severity == 'Error')) and (count() >= 1))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logErrorBioslb2
+          condition: (((serviceName == 'bioslb') and (severity == 'Error')) and (count() >= 100))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logErrorDbdozer1
+          condition: (((serviceName == 'dbdozer') and (severity == 'Error')) and (count() >= 1))
+        - alertName: logErrorDbdozer2
+          condition: (((serviceName == 'dbdozer') and (severity == 'Error')) and (count() >= 100))
+
+        - alertName: logErrorApps1
+          condition: (((serviceType == 'apps') and (severity == 'Error')) and (count() >= 100))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logWarningTurbine1
+          condition: (((serviceName == 'turbine') and (severity == 'Warning')) and (count() >= 10))
+        - alertName: logErrorTurbine2
+          condition: (((serviceName == 'turbine') and (severity == 'Error')) and (count() >= 1))
+
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+        - severity
+      attributes: []
+      featureInterval: 900000
+      alerts:
+        - alertName: logErrorAny1
+          condition: ((severity == 'Error') and (count() >= 1000))
+          alert_periods:
+            silence_days: 0.25
+        - alertName: logWarningAny1
+          condition: ((severity == 'Warning') and (count() >= 10000))
+          alert_periods:
+            silence_days: 0.25
+  lbRequest:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+        - status
+      attributes: []
+      featureInterval: 300000
+      alerts:
+        - alertName: highLbErrors1
+          condition: (count() >= 10)
+          reports:
+            - reportId: lbRequest_Errors
+              durationMinutes: 60
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+        - status
+      attributes: []
+      featureInterval: 900000
+      alerts:
+        - alertName: highLbErrors2
+          condition: (count() >= 1000)
+          reports:
+            - reportId: lbRequest_Errors
+              durationMinutes: 60
+  dbStatus:
+    - featureName: alertFeature
+      dimensions:
+        - hostFriendlyName
+      attributes: [isUpInteger]
+      featureInterval: 300000
+      alerts:
+        - alertName: biosStorageIsDown1
+          condition: (((sum(isUpInteger) * 1.0) / count()) <= 0.5)
+          reports:
+            - reportId: DB_Is_Up
+              durationMinutes: 60
+            - reportId: DB_Number_of_Files
+              durationMinutes: 60
+    - featureName: alertFeatureLong
+      dimensions:
+        - hostFriendlyName
+      attributes: [isUpInteger]
+      featureInterval: 1800000
+      alerts:
+        - alertName: biosStorageIsDown2
+          condition: (((sum(isUpInteger) * 1.0) / count()) <= 0.5)
+          reports:
+            - reportId: DB_Is_Up
+              durationMinutes: 60
+            - reportId: DB_Number_of_Files
+              durationMinutes: 60
+
+# This section can be used to suppress sending alerts or reduce severity of alerts sent
+# when the log messages encountered are known to be safely ignorable.
+# This prevents "spamming" of alert notifications.
+knownLogMessages:
+  # - logMessagePart: Add a part of a known log message here that can be ignored
+  #   serviceName: Name of the service this log message belongs to, e.g. bios, bioslb, webhook, trino
+  #   targetAlertLevel: 0, 1, or 2. 0 suppresses the alert, 1 reduces it to Low.
+  - logMessagePart: "Missed to lookup context with a foreign key: tenant="
+    serviceName: bios
+    targetAlertLevel: 0
+  - logMessagePart: "Invalid primary key: No such primary key"
+    serviceName: bios
+    targetAlertLevel: 0
+  - logMessagePart: "SSL_do_handshake() failed (SSL: error:"
+    serviceName: bioslb
+    targetAlertLevel: 0
+  - logMessagePart: "SSL_read() failed (SSL: error:"
+    serviceName: bioslb
+    targetAlertLevel: 0
+  - logMessagePart: "<status 301>"
+    serviceName: bioslb
+    targetAlertLevel: 0
+  - logMessagePart: "<status 304>"
+    serviceName: bioslb
+    targetAlertLevel: 0
+  - logMessagePart: "<status 400>"
+    serviceName: bioslb
+    targetAlertLevel: 1

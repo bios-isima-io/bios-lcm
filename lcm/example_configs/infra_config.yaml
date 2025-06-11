@@ -1,0 +1,80 @@
+---
+cluster_dns_name: lcm-test.tieredfractals.com
+gcp_project: bios-load
+dns_project: bios-eng
+dns_managed_zone: tieredfractals-dns
+
+# The default is set as latest.
+# bios_python_sdk_version: 1.0.49
+
+## AWS pre_setup config
+aws_public_subnet_prefix: test-public-subnet
+aws_private_subnet_prefix: test-private-subnet
+aws_security_group_prefix: test-security_group
+aws_route_table_prefix: test-route-table
+aws_vpc_name: test-vpc
+aws_igw_name: test-igw
+aws_key_name: load-key
+aws_regions:
+  - ap-south-1
+
+# Your Elastic IP allocation ID
+aws_elastic_ip_allocation_id: eipalloc-xxxxxxxxxxxxxxx
+aws_zone_subnets:
+  private:
+    a: subnet-xxxxxxxxxxxxxxxx
+    b: subnet-xxxxxxxxxxxxxxxx
+    c: subnet-xxxxxxxxxxxxxxxx
+  public:
+    a: subnet-xxxxxxxxxxxxxxxx
+    b: subnet-xxxxxxxxxxxxxxxx
+    c: subnet-xxxxxxxxxxxxxxxx
+
+aws_image_id: ami-xxxxxxxxxxxxxxx
+aws_internal_security_groups:
+  - sg-xxxxxxxxxxxxxxxx
+aws_external_security_groups:
+  - sg-xxxxxxxxxxxxxxxx
+aws_lb_security_groups:
+  - sg-xxxxxxxxxxxxxxxx
+
+aws_vm_type:
+  lcm:
+    machine_type: t3.medium
+
+  lb:
+    machine_type: t3.medium
+
+  compute:
+    machine_type: m5.large
+
+  storage:
+    machine_type: i4i.xlarge
+    # extra_data_disks_count: 2
+    # extra_disk_size_gb: 375
+
+gcp_vm_type:
+  lcm:
+    machine_type: n1-standard-1
+
+  lb:
+    machine_type: n1-standard-1
+
+  compute:
+    machine_type: e2-standard-16
+
+  storage:
+    machine_type: n2-highmem-16
+    num_nvme_disks: 2
+
+gcp_vm_count:
+  lcm: 1
+  lb: 1
+  compute: 1
+  storage: 3
+
+aws_vm_count:
+  lcm: 1
+  lb: 1
+  compute: 1
+  storage: 3

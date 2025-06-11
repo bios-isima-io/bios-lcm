@@ -1,0 +1,211 @@
+#########################################
+# Step 1: Set up DNS name of the cluster.
+#########################################
+cluster_dns_name: bios.isima.io
+
+#############################################################
+# Step 2: Set up the locations of component images.
+# Images are Docker images or FluentBit self-install binary.
+#############################################################
+
+# The location where the component images are available.
+# A local file directory on the LCM host (file://) or Google Storage (gs://) are supported.
+resource_bucket: file:///isima/lcm/images/
+# resource_bucket: gs://isima-builds
+
+# docker images for biOS components. Specify relative paths to the resource_bucket above.
+images:
+  bios:
+    file: bios-1.2.1.tar.gz
+  bios-storage:
+    file: bios-storage-1.2.1.tar.gz
+  bioslb:
+    file: bioslb-1.2.1.tar.gz
+  bios-integrations:
+    file: bios-integrations-1.2.1.tar.gz
+  bios-sql:
+    file: bios-sql-1.2.1.tar.gz
+  bios-maintainer:
+    file: bios-maintainer-1.2.1.tar.gz
+
+# Fluentbit self installation image file. Leave the value blank to skip installation.
+# Specify relative paths to the resource_bucket.
+fluentbit_filename: fluentbit-self-install.bsx
+
+# UI and documentation
+# Specify relative paths to the resource_bucket.
+ui_filename: bios-ui.tar.gz
+docs_filename: bios-docs.tar.gz
+
+################################################################################
+# Step 3: Configure data volumes of storage nodes.
+# Two types of data volumes are required in storage nodes:
+#   - logs volume: for database logs
+#   - data volumes: for database files
+# Specify volumes for the data here. LCM would initialize and mount them
+# to directories specified by properties logs_dir and data_dir_prefix{N}
+# respectively if they are not yet mounted.
+# In case of a test environment, you may just create the directories in
+# logs_dir amd data_dir_prefix{N} manually without extra volumes.
+################################################################################
+logs_volume: /dev/sdb
+data_volumes:
+  - /dev/nvme0n1
+  - /dev/nvme0n2
+
+################################################################################
+# Step 4: Change credentials
+################################################################################
+# bi(OS)
+systemadmin_password: systemadmin
+
+# bi(OS) server token secrets.
+auth_token_secret: GENERATE_SECURE_STRING_SUCH_AS_6F9AaLZ1EPKjmp7zmIMagwEL
+reset_password_token_secret: GENERATE_SECURE_STRING_SUCH_AS_2gpfSyNJE8cMU7TYcKfAHlIM
+approval_token_secret: GENERATE_SECURE_STRING_SUCH_AS_sTbtJkeCJkmIghZusSX5NlHE
+email_verification_token_secret: GENERATE_SECURE_STRING_SUCH_AS_1sONtD8xXWC4QG7wiN585oZy
+subscription_finalization_token_secret: GENERATE_SECURE_STRING_SUCH_AS_cmYRY7BN5JgFVVaYxdwUgbgb
+
+# Cassandra
+db_user: bios
+db_password: GENERATE_YOUR_OWN_0e232d6b-9211-4b55-af73-aaf7308ac4ea
+db_jmx_user: biosmb
+db_jmx_password: GENERATE_YOUR_OWN_d6399b437c357a0c23ffdc34ba016dc8
+
+# bi(OS) integrations
+xmlrpc_user: biosapps
+xmlrpc_password: MakeThisStronger
+
+##########################################################################################
+# The following configuration parameters are not necessary to modify normally.
+##########################################################################################
+
+# bios upgrade parameters
+upgrade_order: [rollup, signal, analysis]
+upgrade_fail_history: 3
+repair_order: [rollup, signal, analysis]
+restore_order: [rollup, signal, analysis]
+retain_redundant_containers: false
+allow_partial_restore: true
+# resource "bios-dev-docker" currently not being updated, issue being tracked by ticket BIOS-4653
+docker_image_downloads: ["bios-integrations", "bios-sdk"]
+keep_docker_images_latest: true
+
+slack_url_low: NotConfigured
+slack_url_high: NotConfigured
+
+bios_container_registry: us.gcr.io
+bios_container_registry_project: bios-eng
+bios_container_registry_region: us
+
+python_sdk_location: us
+python_sdk_repository: python-sdk
+python_sdk_package: bios-sdk
+python_sdk_package_prefix: bios_sdk
+python_sdk_package_suffix: cp310-cp310-linux_x86_64.whl
+
+# global host configs
+isima_base_path: /isima
+log_base_path: /var/log
+
+# Storage node configs
+storage_num_cpus: auto # used for partitioning storage hosts
+storage_memory_gb: auto # used for partitioning storage hosts
+logs_volume_turn_on_discard: false
+data_volumes_turn_on_discard: true
+logs_dir: /mnt/disks/disk1
+data_dir_prefix: /mnt/disks/data
+data_disk_number_start: auto # Determines the initial disk index /mnt/disks/data{n}
+num_data_disks: auto
+db_cpuset: auto # overrides auto calculation, '0-5' '0,1,2,3,4', etc
+db_memory: auto # overrides auto calculation, '800m', '24g', etc
+db_resources_dir: bios-storage
+db_log_dir: bios-storage
+server_resources_dir: bios
+server_log_dir: server
+server_cpuset: auto # overrides auto calculation, '0-5' '0,1,2,3,4', etc
+server_memory: auto # overrides auto calculation, '800m', '24g', etc
+
+boot_disk_type: Replicated
+logs_disk_type: Replicated
+data_disk_type: NVMe
+
+# LB configs
+lb_resources_dir: bioslb
+lb_log_dir: bioslb
+
+# other services
+jupyterhub_users_directory: jupyterhub
+dbdozer_resources_dir: bios-maintainer
+dbdozer_log_dir: bios-maintainer
+whitelisted_ips: []
+whitelisted_uris: []
+integrations_resources_dir: apps
+integrations_log_dir: apps
+load_resources_dir: load
+load_log_dir: load
+sql_resources_dir: sql
+sql_log_dir: sql
+
+#
+# Port numbers
+# lb
+lb_http_port: 80
+lb_https_port: 443
+# server
+http_port: 80
+https_port: 443
+nghttpx_port: 9443
+http3_port: 4433
+http3_enabled: true
+# db
+db_port: 10109
+rpc_port: 10079
+storage_port: 10073
+ssl_storage_port: 10115
+db_jmx_port: 10105
+# apps
+app_ports_offset: 11000
+
+container_name:
+  bios: bios
+  bios-storage: bios-storage
+  bioslb: bioslb
+  bios-integrations: bios-integrations
+  bios-sql: bios-sql
+  bios-devtools: bios-devtools
+  dbdozer: dbdozer
+  load: load
+
+allow_invalid_cert_file: False
+lcm_names_are_same_as_kernel_hostname: true
+
+observe_read_write_password: strongPassword
+observe_writer_password: strongPassword
+system_tenant:
+  tenant_name: _system
+  bios-sql:
+    user: systemadmin@isima.io
+    password: systemadmin
+
+  bios-integrations:
+    user: systemadmin@isima.io
+    password: systemadmin
+    apps_placement:
+      - integrations-webhook
+
+load:
+  # load_pattern options are CONSTANT, GAUSSIAN
+  load_pattern: GAUSSIAN
+  # *_threads are applicable to CONSTANT load pattern.
+  insert_threads: 3
+  upsert_threads: 1
+  select_threads: 1
+  # per_call_sleep_ms is applicable to CONSTANT load pattern: milliseconds to sleep between calls.
+  per_call_sleep_ms: 0
+  # TODO: following should come from the load generator package
+  shared_properties:
+    prop.maintenance.fastTrackWorkerInterval: "300"
+    prop.maintenance.fastTrackMargin: 0
+  fast_track_signals:
+    - inventoryChanges

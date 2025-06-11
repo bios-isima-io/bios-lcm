@@ -1,0 +1,80 @@
+{
+    "upstreams": [
+        {
+            "hostSet": [
+                SIGNAL
+            ],
+            "operationSet": {
+                "operation": [
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "INGEST"
+                    },
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "CONTEXT_WRITE"
+                    }
+                ]
+            }
+        },
+        {
+            "hostSet": [
+                ANALYSIS
+            ],
+            "operationSet": {
+                "operation": [
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "ADMIN_WRITE"
+                    },
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "ADMIN_READ"
+                    },
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "SUMMARIZE"
+                    },
+                    {
+                        "operationPolicy": "ALWAYS",
+                        "operationType": "EXTRACT"
+                    },
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "INGEST"
+                    },
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "CONTEXT_WRITE"
+                    }
+                ]
+            }
+        },
+        {
+            "hostSet": [
+                ROLLUP
+            ],
+            "operationSet": {
+                "operation": [
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "EXTRACT"
+                    },
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "ADMIN_WRITE"
+                    },
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "ADMIN_READ"
+                    },
+                    {
+                        "operationPolicy": "UNDERFAILURE",
+                        "operationType": "SUMMARIZE"
+                    }
+                ]
+            }
+        }
+    ],
+    "lbpolicy": "ROUND_ROBIN"
+}

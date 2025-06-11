@@ -1,0 +1,248 @@
+# Server address and port
+io.isima.bios.server.address=0.0.0.0
+io.isima.bios.server.port=BIOS_PORT
+
+# SSL server keystore configuration. If the file name is a relative path, the server looks for the
+# file from $BIOS_HOME.
+io.isima.bios.server.ssl.keystore.file=configuration/server.p12
+
+# HTTP/3 setup
+io.isima.bios.server.http3.enabled=true
+io.isima.bios.server.http3.port=4433
+io.isima.bios.server.quic.maxIdleTimeoutMillis=600000
+io.isima.bios.server.quic.initialMaxData=10000000
+io.isima.bios.server.quic.initialMaxStreamDataBidirectionalLocal=10000000
+io.isima.bios.server.quic.initialMaxStreamDataBidirectionalRemote=10000000
+io.isima.bios.server.quic.initialMaxStreamsBidirectional=8192
+
+# SSL server keystore password
+io.isima.bios.server.ssl.keystore.password=secret
+
+# The keystore file type. Possible values are JKS (Java KeyStore) and PKCS12.
+io.isima.bios.server.ssl.keystore.type=PKCS12
+
+# Whether the NIO server logging is enabled (default=false)
+io.isima.bios.server.nioLogging.enabled=true
+
+# I/O threads configuration
+# Either one of the number of threads or CPU affinity must be specified.
+# Both must not be configured.
+# TODO we'll set up thread affinity after BIOS-4937 is done
+io.isima.bios.server.io.threads=5
+# io.isima.bios.server.io.threads.affinity=4,5
+
+# Digestor threads configuration
+# Either one of the number of threads or CPU affinity must be specified.
+# Both must not be configured.
+io.isima.bios.server.digestor.threads=1
+# io.isima.bios.server.digestor.threads.affinity=2,3
+
+# Maximum allowed concurrency in an insert bulk operation
+io.isima.bios.data.insertBulkMaxConcurrency=128
+
+# DB Port
+io.isima.bios.db.port=DB_PORT
+
+# DB default consistency level
+io.isima.bios.db.consistencyLevel=QUORUM
+
+#DB contact points, comma separated values
+io.isima.bios.db.contactPoints=localhost
+
+# DB datacenter
+#io.isima.bios.db.datacenter=dc1
+
+# DB data centers for keyspace replication configuration with NetworkTopologyStrategy.
+# Format is list of <datacenter_name>:<replication_factor> separated by comma.
+# If this key is set, property io.isima.bios.db.datacenter is ignored.
+io.isima.bios.db.datacenters=DB_DATA_CENTERS
+
+# Maximum number of remote hosts used for DCAwareRoundRobinPolicy (default=2)
+io.isima.bios.db.usedHostsPerRemoteDc=2
+
+# Interval seconds for db pooling logging.
+# The logging is disabled if the value is equal or less than zero.
+io.isima.bios.db.pooling.loggingInterval=60
+
+# Number of maximum in-flight queries per connection for a local-distance host.
+io.isima.bios.db.pooling.requestPerConnectionLocal=16384
+
+# Number of maximum in-flight queries per connection for a remote-distance host.
+io.isima.bios.db.pooling.requestPerConnectionRemote=4096
+
+# db replication factor.
+io.isima.bios.db.replicationFactor=1
+
+# TLS configuration for connections to DB
+io.isima.bios.db.ssl.enabled=true
+io.isima.bios.db.ssl.keystore.file=/opt/bios/configuration/db.pks12.keystore
+io.isima.bios.db.ssl.keystore.password=secret
+io.isima.bios.db.ssl.truststore.file=/opt/bios/configuration/db.truststore
+io.isima.bios.db.ssl.truststore.password=secret
+
+# db: Use NetworkTopologyStrategy for replication strategy.
+io.isima.bios.db.useNetworkTopologyStrategy=true
+
+# Maximum number of context entry cache items.
+io.isima.bios.contextEntryCacheMaxSize=524288
+
+# Estimated average event size in bytes
+io.isima.bios.data.averageEventSize=1024
+
+# Estimated operations per second onto a stream
+io.isima.bios.data.ops=1000
+
+# Target maximum partition size of a signal table in bytes
+# Default value 400 * 1024 * 1024 (400 MB)
+io.isima.bios.data.partitionSize=419430400
+
+# Index window length for a signal stream.
+# When specified explicitly, this value is set to be index window length of stream.
+# If no value is specified, the index window length is computed by using below formula
+# io.isima.bios.data.partitionSize/ (io.isima.bios.data.ops * io.isima.bios.data.averageEventSize) * 1000"
+#io.isima.bios.data.timeIndexWidth=0
+
+# Compaction configuration for events table
+io.isima.bios.data.signal.compactionConfig={'class': 'org.apache.cassandra.db.compaction.TimeWindowCompactionStrategy', \
+'compaction_window_size': '6', \
+'compaction_window_unit': 'HOURS', \
+'tombstone_compaction_interval': '43200', \
+'tombstone_threshold': '0.8', \
+'unchecked_tombstone_compaction': 'true' \
+}
+
+# Enable DB metrics collection
+io.isima.bios.db.metrics.enabled=true
+
+# Default GC grace seconds for events table. (default: 3 days)
+io.isima.bios.data.signal.gcGraceSeconds=259200
+
+# Ingestion Configuration
+io.isima.bios.db.ingest.concurrency=8192
+io.isima.bios.db.ingest.batchSize=1024
+
+# Rollup lock entry default TTL in seconds.
+io.isima.bios.lock.defaultTtl=60
+
+# Maximum number of threads to run rollups in parallel. (One stream per thread)
+io.isima.bios.data.rollup.numThreads=8
+
+# Maximum number of concurrent tasks for context feature calculation
+io.isima.bios.data.numContextTaskSlots=3
+
+# Enable Metrics task
+io.isima.bios.metrics.enabled=true
+
+# Metrics report destination.
+# Options are SERVER,LOGGER,NONE
+io.isima.bios.metrics.destination=SERVER
+
+# Metrics report period in seconds.
+io.isima.bios.metrics.reportInterval=30
+
+# Maximum time to allow for ingest/extract requests before returning.
+io.isima.bios.data.operationTimeoutMillis=10000
+
+# Rollup enabled.
+io.isima.bios.data.rollup.enabled=ROLLUP_ENABLED
+
+# Rollup interval in seconds.
+io.isima.bios.data.rollup.interval=10
+
+# Default indexing interval when not specified.
+io.isima.bios.data.indexing.defaultInterval=300
+
+# Default time to live seconds of a signal table. (default: 60 days)
+io.isima.bios.data.signal.defaultTimeToLive=15552000
+
+# Feature records default TTL in seconds. (default: 90 days)
+io.isima.bios.features.records.default_time_to_live=7776000
+
+# Default maintenance grace time in minutes during which candidate entities for
+# deletion(tables and databases) are kept in DB before cleanup
+io.isima.bios.db.cleanup.grace.time.minutes=180
+
+io.isima.bios.data.signal.maxEnrichChainLength=2
+
+# Periodically logs tfos/selfserve/ad service status
+io.isima.bios.healthcheck.enabled=true
+io.isima.bios.healthcheck.interval=30
+
+# selfserve related configuration
+io.isima.bios.auth.timeout=36000000
+io.isima.bios.signup.timeout=172800000
+io.isima.bios.forgotPasswordUrlFormat=https://CLUSTER_DNS_NAME:LB_HTTPS_PORT/passwordreset?token=%s
+io.isima.bios.signup.verifyUrlFormat=https://CLUSTER_DNS_NAME:LB_HTTPS_PORT/verifyuser?token=%s
+
+# Email related config
+io.isima.bios.mail.host=AWS_SES_HOST
+io.isima.bios.mail.fromaddress=AWS_SES_FROM_ADDRESS
+io.isima.bios.mail.provider=aws
+io.isima.bios.mail.disabled=false
+io.isima.bios.mail.auth.enable=true
+io.isima.bios.mail.tls.enable=true
+io.isima.bios.mail.sslport=465
+io.isima.bios.mail.tlsport=587
+io.isima.bios.mail.username=AWS_SES_USERNAME
+io.isima.bios.mail.password=AWS_SES_PASSWORD
+
+# CORS Access-Control-Allow-Origin origin white list (comma separated).
+# If one of the entries is asterisk ("*"), the server allows all origins.
+io.isima.bios.server.corsOriginWhitelist=*
+
+# Location of the TLS certificate file used for fan routing
+io.isima.bios.client.ssl.cafile=/opt/bios/configuration/cacerts.pem
+
+# Webhook notification configs
+io.isima.bios.alerts.anomalyNotificationsEnabled=false
+io.isima.bios.alerts.notificationsEnabled=true
+io.isima.bios.alerts.monitoringNotificationsEnabled=false
+
+io.isima.bios.domain.name=CLUSTER_DNS_NAME
+io.isima.bios.signup.approval.admin.email.id=APPROVAL_ADMIN_EMAIL
+io.isima.bios.signup.inviteUrlFormat=https://CLUSTER_DNS_NAME:LB_HTTPS_PORT/invite?token=%s
+io.isima.bios.data.indexTableWriteEnabled=false
+io.isima.bios.data.indexTableReadEnabled=false
+io.isima.bios.jupyterhub.adminToken=token JUPYTER_HUB_ADMIN_TOKEN
+
+# Maximum number of data points that can be generated during a select operation.
+io.isima.bios.select.maxNumDataPoints=2000000
+
+# Workaround BIOS-2916, remove this when it's truly resolved
+# Path of keystore file.
+# this value must be set when io.isima.bios.db.ssl.enabled = true
+javax.net.ssl.keyStore=/opt/bios/configuration/db.pks12.keystore
+
+# password used to create keystore file
+javax.net.ssl.keyStorePassword=secret
+
+# Path of truststore file.
+# Must be set when io.isima.bios.db.ssl.enabled = true
+javax.net.ssl.trustStore=/opt/bios/configuration/db.truststore
+
+# trust store password
+javax.net.ssl.trustStorePassword=secret
+
+# Allow ingestion in _errors signal
+io.bios.ingest.internal.errors=false
+
+# Enters maintenance mode while the server is loading context cache items to enable
+# cache-only mode.
+io.isima.bios.enterMaintenanceModeDuringContextCacheLoading=true
+
+# Location of blocked ip addresses CSV file used for ip blacklisting
+io.isima.bios.blocked.ip.addresses.file=/opt/bios/configuration/blocked_ip_addresses.csv
+
+# These are the default secrets. Change the values in production
+io.isima.bios.auth.token.secret=AUTH_TOKEN_SECRET
+io.isima.bios.passwordReset.token.secret=RESET_PASSWORD_TOKEN_SECRET
+io.isima.bios.approval.token.secret=APPROVAL_TOKEN_SECRET
+io.isima.bios.verification.token.secret=EMAIL_VERIFICATION_TOKEN_SECRET
+io.isima.bios.finalization.token.secret=SUBSCRIPTION_FINALIZATION_TOKEN_SECRET
+io.isima.bios.db.auth.user=DB_USER
+io.isima.bios.db.auth.password=DB_PASSWORD
+io.isima.bios.apps.xmlrpc.user=XMLRPC_USER
+io.isima.bios.apps.xmlrpc.password=XMLRPC_PASSWORD
+io.isima.bios.integrations.mysql.truststore.password=secret
+io.isima.bios.client.ssl.selfSigned=true
+io.isima.bios.jupyterhub.ssl.selfSigned=true

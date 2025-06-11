@@ -1,0 +1,955 @@
+{
+    "reportConfigs": [
+        {
+            "reportId": "01.Operations_by_Request_Type",
+            "reportName": "Operations by Request Type",
+            "metrics": [
+                {
+                    "measurement": "_operations.sum(numSuccessfulOperations) / window_size_seconds",
+                    "as": "Ops / second",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "request"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "request": [
+                    "INSERT",
+                    "SELECT",
+                    "UPSERT",
+                    "INSERT_BULK",
+                    "SELECT_CONTEXT"
+                ]
+            },
+            "filterOrder": [
+                "request"
+            ],
+            "topX": 5,
+            "topY": 20
+        },
+        {
+            "reportId": "02.Num_Rows_per_Select",
+            "reportName": "Num Rows per Select",
+            "metrics": [
+                {
+                    "measurement": "_operations.sum(numReads) / _operations.sum(numSuccessfulOperations)",
+                    "as": "Num Rows per Select",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {
+                "request": [
+                    "SELECT"
+                ]
+            },
+            "filterOrder": [
+                "request"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "03.Records_Throughput",
+            "reportName": "Throughput (records)",
+            "metrics": [
+                {
+                    "measurement": "(_allClientMetrics.sum(numReads) + _allClientMetrics.sum(numWrites) ) / window_size_seconds",
+                    "as": "record/s",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "request"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "request": [
+                    "INSERT",
+                    "SELECT",
+                    "UPSERT"
+                ]
+            },
+            "filterOrder": [
+                "request"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "04.Data_Disk_Free_Space",
+            "reportName": "Data Disk Free Space",
+            "metrics": [
+                {
+                    "measurement": "diskStats.sum(bytesFree) / diskStats.count() / 1024 / 1024 / 1024",
+                    "as": "Disk Free Space (GB)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "subRole"
+            ],
+            "defaultTimeRange": 43200000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {
+                "role": [
+                    "storage"
+                ],
+                "diskPurpose": [
+                    "data"
+                ]
+            },
+            "filterOrder": [
+                "role",
+                "device"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "05.Client_Latencies",
+            "reportName": "Client Latencies",
+            "metrics": [
+                {
+                    "measurement": "_allClientMetrics.sum(latencySum) / _allClientMetrics.sum(numSuccessfulOperations) /1000",
+                    "as": "Client Latency (ms)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "request"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "request": [
+                    "INSERT",
+                    "SELECT",
+                    "UPSERT",
+                    "SELECT_CONTEXT"
+                ]
+            },
+            "filterOrder": [
+                "request"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "06.Server_Latencies",
+            "reportName": "Server Latencies",
+            "metrics": [
+                {
+                    "measurement": "_operations.sum(latencySum) / _operations.sum(numSuccessfulOperations) / 1000",
+                    "as": "Server Latency (ms)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "request"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "request": [
+                    "INSERT",
+                    "SELECT",
+                    "UPSERT",
+                    "SELECT_CONTEXT"
+                ]
+            },
+            "filterOrder": [
+                "request"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "07.NVMe_Latencies",
+            "reportName": "NVMe Latencies",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(writeLatencySum) / ioStats.sum(numWrites) /1000",
+                    "as": "Avg Write Latency (ms.)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "ioStats.sum(readLatencySum) / ioStats.sum(numReads) /1000",
+                    "as": "Avg. Read Latency (ms.)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "role": [
+                    "storage"
+                ],
+                "diskPurpose": [
+                    "data"
+                ]
+            },
+            "filterOrder": [
+                "role",
+                "diskPurpose"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "08.Latency_Summary",
+            "reportName": "Latencies",
+            "metrics": [
+                {
+                    "measurement": "_allClientMetrics.sum(latencySum) / _allClientMetrics.sum(numSuccessfulOperations) / 1000",
+                    "as": "Client latency (ms.)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "_operations.sum(latencySum) / _operations.sum(numSuccessfulOperations) / 1000",
+                    "as": "Server latency (ms.)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "_operations.sum(storageLatencySum) / _operations.sum(numStorageAccesses) / 1000",
+                    "as": "Storage latency (ms.)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "request",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "request": [
+                    "INSERT",
+                    "SELECT",
+                    "UPSERT",
+                    "INSERT_BULK",
+                    "SELECT_CONTEXT"
+                ],
+                "tenant": [
+                    "tenant1"
+                ]
+            },
+            "filterOrder": [
+                "request",
+                "tenant"
+            ],
+            "topX": 20,
+            "topY": 10
+        },
+        {
+            "reportId": "09.NVMe_IOPS",
+            "reportName": "NVMe IOPS",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(numWrites) / window_size_seconds",
+                    "as": "Write IOPS",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "ioStats.sum(numReads) / window_size_seconds",
+                    "as": "Read IOPS",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "role": [
+                    "storage"
+                ],
+                "diskPurpose": [
+                    "data"
+                ]
+            },
+            "filterOrder": [
+                "role",
+                "diskPurpose"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "10.CommitLog_IOPS",
+            "reportName": "CommitLog IOPS",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(numWrites) / window_size_seconds",
+                    "as": "Write IOPS",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "ioStats.sum(numReads) / window_size_seconds",
+                    "as": "Read IOPS",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "role": [
+                    "storage"
+                ],
+                "diskPurpose": [
+                    "commitLog"
+                ]
+            },
+            "filterOrder": [
+                "role",
+                "diskPurpose"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "11.CommitLog_Latencies",
+            "reportName": "CommitLog latencies",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(writeLatencySum) / ioStats.sum(numWrites)",
+                    "as": "Avg. write Latency (micro sec)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "ioStats.sum(readLatencySum) / ioStats.sum(numReads)",
+                    "as": "Avg. Read Latency (micro sec)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "role": [
+                    "storage"
+                ],
+                "diskPurpose": [
+                    "commitLog"
+                ]
+            },
+            "filterOrder": [
+                "role",
+                "diskPurpose"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "12.Commitlog_Throughput",
+            "reportName": "Commitlog Throughput",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(bytesWritten) / 1024 / 1024 / window_size_seconds",
+                    "as": "Write (MB/s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "ioStats.sum(bytesRead) /1024 / 1024 / window_size_seconds",
+                    "as": "Read (MB/s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "role": [
+                    "storage"
+                ]
+            },
+            "filterOrder": [
+                "role"
+            ],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "13.Memory_Utilization",
+            "reportName": "Memory Utilization",
+            "metrics": [
+                {
+                    "measurement": "memStats.sum(bytesUsed) / memStats.count() / 1024 / 1024 / 1024",
+                    "as": "mem used (GB)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "14.Container_CPU_Usage",
+            "reportName": "Container CPU Usage",
+            "metrics": [
+                {
+                    "measurement": "containers.sum(cpuUsage) / containers.count()",
+                    "as": "Container: Avg. CPU Usage",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "name"
+            ],
+            "defaultTimeRange": 43200000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 20,
+            "topY": 20,
+            "cyclicalComparisonStart": "Hourly"
+        },
+        {
+            "reportId": "15.CPU_Usage_by_Host",
+            "reportName": "CPU Usage by Host",
+            "metrics": [
+                {
+                    "measurement": "cpuStats.sum(cpuUsage) / cpuStats.count()",
+                    "as": "CPU Usage %",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 5,
+            "topY": 10
+        },
+        {
+            "reportId": "16.Network_Throughput",
+            "reportName": "Network Throughput",
+            "metrics": [
+                {
+                    "measurement": "netStats.sum(bytesReceived) / window_size_seconds / 1024 / 1024",
+                    "as": "Rx (MB / s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "netStats.sum(bytesTransmitted) / window_size_seconds / 1024 / 1024",
+                    "as": "Tx (MB / s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "netStats.sum(numPacketsReceived) / window_size_seconds",
+                    "as": "Rx (packets/s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "right",
+                    "showPercentage": false
+                },
+                {
+                    "measurement": "netStats.sum(numPacketsTransmitted) / window_size_seconds",
+                    "as": "Tx (packets/s)",
+                    "type": "derived",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "right",
+                    "showPercentage": false
+                }
+            ],
+            "dimensions": [
+                "subRole",
+                ""
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {
+                "role": [
+                    "storage"
+                ]
+            },
+            "filterOrder": [
+                "interface",
+                "role"
+            ],
+            "topX": 5,
+            "topY": 10,
+            "cyclicalComparisonStart": "Hourly"
+        },
+        {
+            "reportId": "Heartbeat_All",
+            "reportName": "Heartbeat All",
+            "metrics": [
+                {
+                    "measurement": "appStatus.count()",
+                    "as": "Heartbeat Count",
+                    "type": "simple",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "logLevel": [
+                    "Info"
+                ]
+            },
+            "filterOrder": [
+                "logLevel"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Heartbeat_bios",
+            "reportName": "Heartbeat bios",
+            "metrics": [
+                {
+                    "measurement": "appStatus.count()",
+                    "as": "Heartbeat Count",
+                    "type": "simple",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {
+                "logLevel": [
+                    "Info"
+                ],
+                "appName": [
+                    "bios"
+                ]
+            },
+            "filterOrder": [
+                "logLevel",
+                "appName"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Heartbeat_webhook",
+            "reportName": "Heartbeat webhook",
+            "metrics": [
+                {
+                    "measurement": "appStatus.count()",
+                    "as": "Heartbeat Count",
+                    "type": "simple",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "tenant",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "logLevel": [
+                    "Info"
+                ],
+                "appName": [
+                    "webhook"
+                ]
+            },
+            "filterOrder": [
+                "logLevel",
+                "appName"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Heartbeat_bios_storage",
+            "reportName": "Heartbeat bios-storage",
+            "metrics": [
+                {
+                    "measurement": "appStatus.count()",
+                    "as": "Heartbeat Count",
+                    "type": "simple",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "logLevel": [
+                    "Info"
+                ],
+                "appName": [
+                    "bios_storage"
+                ]
+            },
+            "filterOrder": [
+                "logLevel",
+                "appName"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "DB_Is_Up",
+            "reportName": "DB Is Up",
+            "metrics": [
+                {
+                    "measurement": "dbStatus.sum(isUpInteger) / dbStatus.count()",
+                    "as": "DB Is Up",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "DB_Number_of_Files",
+            "reportName": "DB Number of Files",
+            "metrics": [
+                {
+                    "measurement": "dbStatus.sum(numDbFiles) / dbStatus.count()",
+                    "as": "Num DB Files",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 15,
+            "topY": 20
+        },
+        {
+            "reportId": "Disk_Space_Usage",
+            "reportName": "Disk Space Usage",
+            "metrics": [
+                {
+                    "measurement": "diskStats.sum(bytesUsed) / diskStats.sum(bytesTotal)",
+                    "as": "Disk Space Used",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left",
+                    "showPercentage": true
+                }
+            ],
+            "dimensions": [
+                "hostFriendlyName",
+                "mountpoint"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Disk_Write_Latency",
+            "reportName": "Disk Write Latency",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(writeLatencySum) / ioStats.sum(numWrites)",
+                    "as": "Avg. Write Latency (micro sec)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "diskPurpose": [
+                    "data",
+                    "commitLog"
+                ]
+            },
+            "filterOrder": [
+                "diskPurpose"
+            ],
+            "topX": 5,
+            "topY": 20
+        },
+        {
+            "reportId": "Disk_Read_Latency",
+            "reportName": "Disk Read Latency",
+            "metrics": [
+                {
+                    "measurement": "ioStats.sum(readLatencySum) / ioStats.sum(numReads)",
+                    "as": "Avg. Read Latency (micro sec)",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": true,
+            "filters": {
+                "diskPurpose": [
+                    "data",
+                    "commitLog"
+                ]
+            },
+            "filterOrder": [
+                "diskPurpose"
+            ],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Container_Memory_Usage",
+            "reportName": "Container Memory Usage",
+            "metrics": [
+                {
+                    "measurement": "containers.sum(memUsage) / containers.count()",
+                    "as": "Container Memory Usage %",
+                    "type": "derived",
+                    "defaultGraphType": "line",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "hostFriendlyName",
+                "name"
+            ],
+            "defaultTimeRange": 3600000,
+            "defaultWindowLength": 300000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 20,
+            "topY": 20
+        },
+        {
+            "reportId": "Network_Errors",
+            "reportName": "Network Errors",
+            "metrics": [
+                {
+                    "measurement": "netStats.sum(numReceiveErrors)",
+                    "as": "netStats.sum(numReceiveErrors)",
+                    "type": "simple",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                },
+                {
+                    "measurement": "netStats.sum(numTransmitErrors)",
+                    "as": "netStats.sum(numTransmitErrors)",
+                    "type": "simple",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "",
+                "hostFriendlyName"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 5,
+            "topY": 20,
+            "cyclicalComparisonStart": null
+        },
+        {
+            "reportId": "lbRequest_Errors",
+            "reportName": "lbRequest Errors",
+            "metrics": [
+                {
+                    "measurement": "lbRequest.count()",
+                    "as": "Number of error status responses",
+                    "type": "simple",
+                    "defaultGraphType": "bar",
+                    "yAxisPosition": "left"
+                }
+            ],
+            "dimensions": [
+                "status",
+                "uri"
+            ],
+            "defaultTimeRange": 21600000,
+            "defaultWindowLength": 900000,
+            "defaultStartTime": 0,
+            "existingReport": false,
+            "filters": {},
+            "filterOrder": [],
+            "topX": 20,
+            "topY": 20
+        }
+    ]
+}

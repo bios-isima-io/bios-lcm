@@ -1,0 +1,501 @@
+---
+# CLUSTER_DNS_NAME if used anywhere in this file, will be replaced by
+# the actual DNS name of the current cluster, as declared in cluster_config.yaml.
+tenant_name: tenant3
+users:
+  - user: admin@tenant3.com
+    full_name: tenant3 admin
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+  - user: load@tenant3.com
+    full_name: Load Generator User
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+support_user_password: strongPassword
+
+bios-integrations:
+  user: load@tenant3.com
+  password: strongPassword
+  apps_placement:
+    - integrations-webhook
+
+bios-sql:
+  user: load@tenant3.com
+  password: strongPassword
+
+load:
+  user: load@tenant3.com
+  password: strongPassword
+  load_pattern: CONSTANT
+  # load_pattern: GAUSSIAN
+  profile_type: TEST
+  insert_threads: 3
+  upsert_threads: 1
+  select_threads: 3
+  per_call_sleep_ms: 90
+
+signals:
+  - signalName: allEvents
+    missingAttributePolicy: StoreDefaultValue
+    attributes:
+      - attributeName: eventId
+        type: String
+        tags:
+          category: Dimension
+        default: MISSING
+      - attributeName: sourceFirstTimestamp
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+        default: 0
+      - attributeName: eVar1
+        type: String
+        default: MISSING
+      - attributeName: eVar2
+        type: String
+        default: MISSING
+      - attributeName: eVar3
+        type: String
+        default: MISSING
+      - attributeName: eVar4
+        type: String
+        default: MISSING
+      - attributeName: eVar5
+        type: String
+        default: MISSING
+      - attributeName: eVar6
+        type: String
+        default: MISSING
+      - attributeName: eVar7
+        type: String
+        default: MISSING
+      - attributeName: eVar8
+        type: String
+        default: MISSING
+      - attributeName: eVar9
+        type: String
+        default: MISSING
+      - attributeName: eVar10
+        type: String
+        default: MISSING
+      - attributeName: eVar11
+        type: String
+        default: MISSING
+      - attributeName: eVar12
+        type: String
+        default: MISSING
+      - attributeName: eVar13
+        type: String
+        default: MISSING
+      - attributeName: eVar14
+        type: String
+        default: MISSING
+      - attributeName: eVar15
+        type: String
+        default: MISSING
+      - attributeName: eVar16
+        type: String
+        default: MISSING
+      - attributeName: eVar17
+        type: String
+        default: MISSING
+      - attributeName: eVar18
+        type: String
+        default: MISSING
+      - attributeName: eVar19
+        type: String
+        default: MISSING
+      - attributeName: eVar20
+        type: String
+        default: MISSING
+      - attributeName: eVar21
+        type: String
+        default: MISSING
+      - attributeName: eVar22
+        type: String
+        default: MISSING
+      - attributeName: eVar23
+        type: String
+        default: MISSING
+      - attributeName: eVar24
+        type: String
+        default: MISSING
+      - attributeName: eVar25
+        type: String
+        default: MISSING
+      - attributeName: eVar26
+        type: String
+        default: MISSING
+      - attributeName: eVar27
+        type: String
+        default: MISSING
+      - attributeName: eVar28
+        type: String
+        default: MISSING
+      - attributeName: eVar29
+        type: String
+        default: MISSING
+      - attributeName: eVar30
+        type: String
+        default: MISSING
+      - attributeName: eVar31
+        type: String
+        default: MISSING
+      - attributeName: eVar32
+        type: String
+        default: MISSING
+      - attributeName: eVar33
+        type: String
+        default: MISSING
+      - attributeName: eVar34
+        type: String
+        default: MISSING
+      - attributeName: eVar35
+        type: String
+        default: MISSING
+      - attributeName: eVar36
+        type: String
+        default: MISSING
+      - attributeName: eVar37
+        type: String
+        default: MISSING
+      - attributeName: eVar38
+        type: String
+        default: MISSING
+      - attributeName: eVar39
+        type: String
+        default: MISSING
+      - attributeName: eVar40
+        type: String
+        default: MISSING
+      - attributeName: eVar41
+        type: String
+        default: MISSING
+      - attributeName: eVar42
+        type: String
+        default: MISSING
+      - attributeName: eVar43
+        type: String
+        default: MISSING
+      - attributeName: eVar44
+        type: String
+        default: MISSING
+      - attributeName: eVar45
+        type: String
+        default: MISSING
+      - attributeName: eVar46
+        type: String
+        default: MISSING
+      - attributeName: eVar47
+        type: String
+        default: MISSING
+      - attributeName: eVar48
+        type: String
+        default: MISSING
+      - attributeName: eVar49
+        type: String
+        default: MISSING
+      - attributeName: eVar50
+        type: String
+        default: MISSING
+      - attributeName: clientIP
+        type: String
+        default: "127.0.0.1"
+    enrich:
+      ingestTimeLag:
+        - ingestTimeLagName: sourceFirstTimestampTimeLag
+          attribute: sourceFirstTimestamp
+          as: sourceFirstTimestampLag
+          tags:
+            category: Quantity
+            kind: Duration
+            unit: Millisecond
+          fillIn: 0
+    postStorageStage:
+      features:
+        - featureName: byAll
+          dimensions:
+            - eVar1
+            - eVar2
+            - eVar3
+            - eVar4
+            - eVar5
+          attributes: []
+          featureInterval: 300000
+        - featureName: byMisc
+          dimensions:
+            - eVar6
+            - eVar7
+          attributes: []
+          featureInterval: 300000
+
+importDataProcessors:
+  - processorName: ts_utils
+    encoding: plain
+    code: |
+      import ast
+
+      def get_sft(props_str):
+        prop_list = ast.literal_eval(str(props_str))
+        for prop in prop_list:
+            if prop['name'] == "sourceFirstTimestamp":
+                return int(prop['value']) * 1000
+        return 0
+
+      def get_slt(props_str):
+        prop_list = ast.literal_eval(str(props_str))
+        for prop in prop_list:
+            if prop['name'] == "sourceLastTimestamp":
+                return int(prop['value']) * 1000
+        return 0
+
+      def get_tft(props_str):
+        prop_list = ast.literal_eval(str(props_str))
+        for prop in prop_list:
+            if prop['name'] == "triggerFiredTimestamp":
+                return int(prop['value'])
+        return 0
+
+importDestinations:
+  - importDestinationId: Login
+    importDestinationName: Login
+    type: Bios
+    endpoint: https://CLUSTER_DNS_NAME
+    authentication:
+      type: Login
+      user: admin@tenant3.com
+      password: strongPassword
+
+importSources:
+  - importSourceId: testWebhook
+    importSourceName: testWebhook
+    type: Webhook
+    importDestinationId: Login
+    webhookPath: "/test-webhook"
+
+importFlowSpecs:
+  - importFlowId: allEventsFlow
+    importFlowName: allEventsFlow
+    sourceDataSpec:
+      importSourceId: testWebhook
+      payloadType: Json
+    destinationDataSpec:
+      importDestinationId: Login
+      type: Signal
+      name: allEvents
+    dataPickupSpec:
+      attributeSearchPath: event
+      attributes:
+        - sourceAttributeName: "/event_id"
+          as: eventId
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/header/properties
+          processes:
+            - processorName: ts_utils
+              method: get_sft
+          as: sourceFirstTimestamp
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar1/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar1
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar2/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar2
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar3/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar3
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar4/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar4
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar5/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar5
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar6/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar6
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar7/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar7
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar8/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar8
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar9/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar9
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar10/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar10
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar11/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar11
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar12/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar12
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar13/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar13
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar14/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar14
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar15/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar15
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar16/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar16
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar17/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar17
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar18/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar18
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar19/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar19
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar20/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar20
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar21/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar21
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar22/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar22
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar23/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar23
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar24/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar24
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar25/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar25
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar26/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar26
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar27/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar27
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar28/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar28
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar29/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar29
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar30/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar30
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar31/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar31
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar32/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar32
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar33/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar33
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar34/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar34
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar35/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar35
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar36/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar36
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar37/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar37
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar38/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar38
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar39/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar39
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar40/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar40
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar41/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar41
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar42/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar42
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar43/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar43
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar44/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar44
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar45/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar45
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar46/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar46
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar47/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar47
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar48/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar48
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar49/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar49
+        - sourceAttributeName: com.adobe.mcloud.pipeline.pipelineMessage/com.adobe.mcloud.protocol.trigger/enrichments/analyticsHitSummary/dimensions/eVar50/data/*
+          transforms:
+            - rule: "lambda val: val or 'MISSING'"
+              as: eVar50
+        - sourceAttributeName: "${x-real-ip}"
+          transforms:
+            - rule: "lambda val: val.split(',')[0].strip() if val else '127.0.0.1'"
+              as: clientIP

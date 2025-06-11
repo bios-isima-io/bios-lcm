@@ -1,0 +1,3727 @@
+[
+  {
+    "contextName": "visitorContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "customerId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "utmSource",
+        "type": "String"
+      },
+      {
+        "attributeName": "utmContent",
+        "type": "String"
+      },
+      {
+        "attributeName": "utmMedium",
+        "type": "String"
+      },
+      {
+        "attributeName": "utmCampaign",
+        "type": "String"
+      },
+      {
+        "attributeName": "utmTerm",
+        "type": "String"
+      },
+      {
+        "attributeName": "deeplink",
+        "type": "String"
+      },
+      {
+        "attributeName": "daysSinceLastVisit",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "lastVisitDate",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "visitorType",
+        "type": "String"
+      },
+      {
+        "attributeName": "hsSite",
+        "type": "String"
+      },
+      {
+        "attributeName": "segmentSource",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "visitorId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "warehouseContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "warehouseId",
+        "type": "String"
+      },
+      {
+        "attributeName": "warehouseName",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "city",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "createdAt",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "updatedAt",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "isActive",
+        "type": "Boolean",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": true
+      }
+    ],
+    "primaryKey": [
+      "warehouseId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "missingLookupPolicy": "FailParentLookup",
+    "enrichments": [],
+    "auditEnabled": true
+  },
+  {
+    "contextName": "deviceContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "deviceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "ipAddress",
+        "type": "String"
+      },
+      {
+        "attributeName": "os",
+        "type": "String"
+      },
+      {
+        "attributeName": "osVersion",
+        "type": "String"
+      },
+      {
+        "attributeName": "browser",
+        "type": "String"
+      },
+      {
+        "attributeName": "advertisingTrackingEnabled",
+        "type": "Boolean"
+      },
+      {
+        "attributeName": "advertisingId",
+        "type": "String"
+      },
+      {
+        "attributeName": "screenHeight",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "screenWidth",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "screenDensity",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "deviceManufacturer",
+        "type": "String"
+      },
+      {
+        "attributeName": "deviceModel",
+        "type": "String"
+      },
+      {
+        "attributeName": "deviceName",
+        "type": "String"
+      },
+      {
+        "attributeName": "deviceType",
+        "type": "String"
+      },
+      {
+        "attributeName": "networkType",
+        "type": "String"
+      },
+      {
+        "attributeName": "cellularNetwork",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "visitorId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "staff",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "cost",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "aliasName",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "resourceType",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceTypeNum",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "resourceTypeCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "resourceCategory",
+        "type": "Integer"
+      }
+    ],
+    "primaryKey": [
+      "resourceTypeNum"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "machine",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "cost",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "machineId",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "warehouseInventoryContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "inventoryId",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "warehouseId",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "productId",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "lotId",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "batch",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "bin",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "binType",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "mrp",
+        "type": "Decimal",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "available",
+        "type": "Boolean",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": true
+      },
+      {
+        "attributeName": "expiry",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "createdAt",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "updatedAt",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      }
+    ],
+    "primaryKey": [
+      "inventoryId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "missingLookupPolicy": "FailParentLookup",
+    "enrichments": [],
+    "auditEnabled": true
+  },
+  {
+    "contextName": "workspace",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "rent",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "workspaceId",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "countryContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "countryCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "name",
+        "type": "String"
+      },
+      {
+        "attributeName": "population",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "continent",
+        "type": "String",
+        "allowedValues": [
+          "Asia",
+          "Africa",
+          "Europe",
+          "Australia",
+          "North America",
+          "South America"
+        ]
+      }
+    ],
+    "primaryKey": [
+      "countryCode"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "venue",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "cost",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "venueId",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "productAddedToCart_product_idByVisitorId",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "product_idCollection",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "visitorId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false,
+    "ttl": 6480000000
+  },
+  {
+    "contextName": "doctor",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "salary",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "aliasName",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "auxiliary",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "cost",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "auxiliaryId",
+        "type": "String"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "auditEnabled": false
+  },
+  {
+    "contextName": "storeContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "storeId",
+        "type": "String"
+      },
+      {
+        "attributeName": "name",
+        "type": "String"
+      },
+      {
+        "attributeName": "address",
+        "type": "String"
+      },
+      {
+        "attributeName": "city",
+        "type": "String"
+      },
+      {
+        "attributeName": "state",
+        "type": "String"
+      },
+      {
+        "attributeName": "pincode",
+        "type": "Integer"
+      }
+    ],
+    "primaryKey": [
+      "storeId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "missingLookupPolicy": "FailParentLookup",
+    "enrichments": [],
+    "auditEnabled": true
+  },
+  {
+    "contextName": "enrichedContext",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      },
+      {
+        "attributeName": "resourceTypeNum",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "zipcode",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "missing_zipcode"
+      }
+    ],
+    "primaryKey": [
+      "resourceId"
+    ],
+    "dataSynthesisStatus": "Disabled",
+    "missingLookupPolicy": "FailParentLookup",
+    "enrichments": [
+      {
+        "enrichmentName": "resourceType",
+        "foreignKey": [
+          "resourceTypeNum"
+        ],
+        "enrichedAttributes": [
+          {
+            "value": "resourceType.resourceTypeCode"
+          },
+          {
+            "value": "resourceType.resourceCategory",
+            "as": "myResourceCategory"
+          }
+        ]
+      },
+      {
+        "enrichmentName": "resourceDetails",
+        "foreignKey": [
+          "resourceId"
+        ],
+        "enrichedAttributes": [
+          {
+            "valuePickFirst": [
+              "staff.cost",
+              "doctor.salary",
+              "venue.cost",
+              "auxiliary.cost",
+              "machine.cost",
+              "workspace.rent"
+            ],
+            "as": "cost"
+          },
+          {
+            "valuePickFirst": [
+              "staff.aliasName",
+              "doctor.aliasName",
+              "venue.venueId",
+              "auxiliary.auxiliaryId",
+              "machine.machineId",
+              "workspace.workspaceId"
+            ],
+            "as": "resourceValue"
+          }
+        ]
+      }
+    ],
+    "auditEnabled": false
+  },
+  {
+    "contextName": "productCatalog",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "productId",
+        "type": "String"
+      },
+      {
+        "attributeName": "title",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": ""
+      },
+      {
+        "attributeName": "description",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": ""
+      },
+      {
+        "attributeName": "group",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": ""
+      },
+      {
+        "attributeName": "category",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": ""
+      },
+      {
+        "attributeName": "subCategory",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": ""
+      },
+      {
+        "attributeName": "salePrice",
+        "type": "String"
+      },
+      {
+        "attributeName": "inStockCount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "isAdult",
+        "type": "Boolean",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": false
+      },
+      {
+        "attributeName": "status",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      }
+    ],
+    "primaryKey": [
+      "productId"
+    ],
+    "auditEnabled": true,
+    "features": [
+      {
+        "featureName": "byStockCount",
+        "dimensions": [
+          "inStockCount"
+        ],
+        "attributes": [
+          "productId",
+          "title"
+        ],
+        "featureInterval": 30000,
+        "indexed": true,
+        "indexType": "RangeQuery"
+      },
+      {
+        "featureName": "bycategory",
+        "dimensions": [
+          "category",
+          "subCategory"
+        ],
+        "attributes": [
+          "title"
+        ],
+        "featureInterval": 30000,
+        "indexed": true,
+        "indexType": "ExactMatch"
+      },
+      {
+        "featureName": "byCategoryStockCount",
+        "dimensions": [
+          "category",
+          "subCategory",
+          "inStockCount"
+        ],
+        "attributes": [
+          "productId"
+        ],
+        "featureInterval": 30000,
+        "indexed": true,
+        "indexType": "RangeQuery"
+      }
+    ]
+  },
+  {
+    "signalName": "covidDataSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "reportedDate",
+        "type": "String"
+      },
+      {
+        "attributeName": "countryCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "reportedCases",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "reportedDeaths",
+        "type": "Integer"
+      }
+    ],
+    "enrich": {
+      "missingLookupPolicy": "StoreFillInValue",
+      "enrichments": [
+        {
+          "enrichmentName": "countryJoin",
+          "foreignKey": [
+            "countryCode"
+          ],
+          "missingLookupPolicy": "Reject",
+          "contextName": "countryContext",
+          "contextAttributes": [
+            {
+              "attributeName": "name",
+              "as": "countryName"
+            },
+            {
+              "attributeName": "population"
+            },
+            {
+              "attributeName": "continent"
+            }
+          ]
+        }
+      ]
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "by_country",
+          "dimensions": [
+            "countryCode"
+          ],
+          "attributes": [
+            "reportedCases",
+            "reportedDeaths"
+          ],
+          "featureInterval": 300000
+        },
+        {
+          "featureName": "by_continent",
+          "dimensions": [
+            "continent"
+          ],
+          "attributes": [
+            "reportedCases",
+            "reportedDeaths"
+          ],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "homepageViewSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "firstScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromFeedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromLocation",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortBy",
+        "type": "String"
+      },
+      {
+        "attributeName": "track",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byFunnelSection",
+          "dimensions": [
+            "funnel",
+            "section",
+            "subsection",
+            "funnelTile"
+          ],
+          "attributes": [],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "patientVisits",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "patientId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "resourceId",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "resourceDetails",
+          "foreignKey": [
+            "resourceId"
+          ],
+          "missingLookupPolicy": "Reject",
+          "contextName": "enrichedContext",
+          "contextAttributes": [
+            {
+              "attributeName": "resourceTypeNum"
+            },
+            {
+              "attributeName": "zipcode"
+            },
+            {
+              "attributeName": "resourceTypeCode"
+            },
+            {
+              "attributeName": "myResourceCategory"
+            },
+            {
+              "attributeName": "cost"
+            },
+            {
+              "attributeName": "resourceValue"
+            }
+          ]
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "sessionStartedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "sessionStartedDate",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productListingViewedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "feedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromFeedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromLocation",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "plpType",
+        "type": "String"
+      },
+      {
+        "attributeName": "position",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productListingId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productListingName",
+        "type": "String"
+      },
+      {
+        "attributeName": "row",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortby",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortOrder",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "homepageScrollSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "appScreenHeight",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledFunnelTiles",
+        "type": "String"
+      },
+      {
+        "attributeName": "scrolledHeight",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledSections",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortBy",
+        "type": "String"
+      },
+      {
+        "attributeName": "totalRows",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "trigger",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byFunnelSection",
+          "dimensions": [
+            "funnel",
+            "section",
+            "subsection",
+            "funnelTile"
+          ],
+          "attributes": [],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productOrderedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productId",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "quantity",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sku",
+        "type": "String"
+      },
+      {
+        "attributeName": "order_id",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "price",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "revenue",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "pincode",
+        "type": "String"
+      },
+      {
+        "attributeName": "payment_mode",
+        "type": "String"
+      },
+      {
+        "attributeName": "preorder",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "deviceJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "deviceContext",
+          "contextAttributes": [
+            {
+              "attributeName": "os",
+              "fillIn": "default_os"
+            },
+            {
+              "attributeName": "osVersion",
+              "fillIn": "default_osVersion"
+            },
+            {
+              "attributeName": "browser",
+              "fillIn": "default_browser"
+            },
+            {
+              "attributeName": "deviceManufacturer",
+              "fillIn": "default_deviceManufacturer"
+            },
+            {
+              "attributeName": "deviceModel",
+              "fillIn": "default_deviceModel"
+            },
+            {
+              "attributeName": "deviceName",
+              "fillIn": "default_deviceName"
+            },
+            {
+              "attributeName": "deviceType",
+              "fillIn": "default_deviceType"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "visitorJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "visitorContext",
+          "contextAttributes": [
+            {
+              "attributeName": "utmSource",
+              "fillIn": "default_utm_source"
+            },
+            {
+              "attributeName": "utmContent",
+              "fillIn": "default_utmContent"
+            },
+            {
+              "attributeName": "utmMedium",
+              "fillIn": "default_utmMedium"
+            },
+            {
+              "attributeName": "utmCampaign",
+              "fillIn": "default_utmCampaign"
+            },
+            {
+              "attributeName": "visitorType",
+              "fillIn": "default_visitorType"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byAll",
+          "dimensions": [
+            "funnel",
+            "section",
+            "subsection",
+            "funnelTile",
+            "funnelRow",
+            "sortbar",
+            "sortbarGroup",
+            "funnelSection",
+            "plp",
+            "os",
+            "osVersion",
+            "deviceModel",
+            "browser",
+            "deviceName",
+            "deviceType"
+          ],
+          "attributes": [
+            "quantity",
+            "price",
+            "revenue"
+          ],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "customerRegisteredSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "authenticationType",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromLocation",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromRedirect",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "validationType",
+        "type": "String"
+      },
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "missingLookupPolicy": "StoreFillInValue",
+      "enrichments": [
+        {
+          "enrichmentName": "deviceJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "deviceContext",
+          "contextAttributes": [
+            {
+              "attributeName": "os",
+              "fillIn": "default_os"
+            },
+            {
+              "attributeName": "osVersion",
+              "fillIn": "default_osVersion"
+            },
+            {
+              "attributeName": "browser",
+              "fillIn": "default_browser"
+            },
+            {
+              "attributeName": "ipAddress",
+              "fillIn": "127.0.0.1"
+            },
+            {
+              "attributeName": "advertisingTrackingEnabled",
+              "fillIn": false
+            },
+            {
+              "attributeName": "advertisingId",
+              "fillIn": "default_advertisingId"
+            },
+            {
+              "attributeName": "screenHeight",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenWidth",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenDensity",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "deviceManufacturer",
+              "fillIn": "default_deviceManufacturer"
+            },
+            {
+              "attributeName": "deviceModel",
+              "fillIn": "default_deviceModel"
+            },
+            {
+              "attributeName": "deviceName",
+              "fillIn": "default_deviceName"
+            },
+            {
+              "attributeName": "deviceType",
+              "fillIn": "default_deviceType"
+            },
+            {
+              "attributeName": "networkType",
+              "fillIn": "default_networkType"
+            },
+            {
+              "attributeName": "cellularNetwork",
+              "fillIn": "default_cellularNetwork"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "visitorJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "visitorContext",
+          "contextAttributes": [
+            {
+              "attributeName": "utmSource",
+              "fillIn": "default_utm_source"
+            },
+            {
+              "attributeName": "utmContent",
+              "fillIn": "default_utmContent"
+            },
+            {
+              "attributeName": "utmMedium",
+              "fillIn": "default_utmMedium"
+            },
+            {
+              "attributeName": "customerId",
+              "fillIn": -1000
+            },
+            {
+              "attributeName": "utmCampaign",
+              "fillIn": "default_utmCampaign"
+            },
+            {
+              "attributeName": "utmTerm",
+              "fillIn": "default_utmTerm"
+            },
+            {
+              "attributeName": "deeplink",
+              "fillIn": "default_deeplink"
+            },
+            {
+              "attributeName": "daysSinceLastVisit",
+              "fillIn": 7
+            },
+            {
+              "attributeName": "lastVisitDate",
+              "fillIn": 1654038581000
+            },
+            {
+              "attributeName": "visitorType",
+              "fillIn": "default_visitorType"
+            },
+            {
+              "attributeName": "hsSite",
+              "fillIn": "default_hsSite"
+            },
+            {
+              "attributeName": "segmentSource",
+              "fillIn": "default_segmentSource"
+            }
+          ]
+        }
+      ]
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "customer_reg_by_loc_redirect",
+          "dimensions": [
+            "fromLocation",
+            "fromRedirect"
+          ],
+          "attributes": [],
+          "featureInterval": 300000
+        },
+        {
+          "featureName": "total_customer_registered",
+          "attributes": [],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "warehouseOrderSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "warehouseOrderId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "orderId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "priority",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "LOW",
+          "NORMAL",
+          "HIGH",
+          "EXPRESS"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "NORMAL"
+      },
+      {
+        "attributeName": "status",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "READY_FOR_BILLING",
+          "PENDING_FOR_STOCK",
+          "CANCELLED",
+          "PICKING_IN_PROGRESS",
+          "RECEIVED_AT_STORE",
+          "INVENTORY_BLOCK_PENDING",
+          "CANCELLED_PENDING_FOR_RETURN",
+          "STORE_INVOICE_GENERATED"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "RECEIVED_AT_STORE"
+      },
+      {
+        "attributeName": "createdBy",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "createdAt",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "updatedBy",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "updatedAt",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "orderEDD",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "warehouseTDD",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "totalAmount",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$",
+          "firstSummary": "AVG"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "payableAmount",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$",
+          "firstSummary": "AVG"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "deliveryCharge",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$",
+          "firstSummary": "AVG"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "codCharge",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$",
+          "firstSummary": "AVG"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "isCourierOrder",
+        "type": "Boolean",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": false
+      },
+      {
+        "attributeName": "addressId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "storeId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "pickerTaskId",
+        "type": "Integer",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "warehouseId",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "locationEnrichment",
+          "foreignKey": [
+            "warehouseId"
+          ],
+          "missingLookupPolicy": "Reject",
+          "contextName": "warehouseContext",
+          "contextAttributes": [
+            {
+              "attributeName": "warehouseName"
+            },
+            {
+              "attributeName": "city"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byWhStatusPriority",
+          "dimensions": [
+            "warehouseOrderId",
+            "status",
+            "warehouseName",
+            "priority",
+            "warehouseId"
+          ],
+          "attributes": [
+            "totalAmount",
+            "payableAmount",
+            "deliveryCharge",
+            "codCharge"
+          ],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productViewSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productId",
+        "type": "String"
+      },
+      {
+        "attributeName": "edd",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "ipAddress",
+        "type": "String",
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "0.0.0.0"
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "ip2geoEnrichment",
+          "foreignKey": [
+            "ipAddress"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "_ip2geo",
+          "contextAttributes": [
+            {
+              "attributeName": "city",
+              "fillIn": "MISSING"
+            },
+            {
+              "attributeName": "country",
+              "fillIn": "MISSING"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "plpScrolledSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueName",
+        "type": "String"
+      },
+      {
+        "attributeName": "brand",
+        "type": "String"
+      },
+      {
+        "attributeName": "category",
+        "type": "String"
+      },
+      {
+        "attributeName": "feedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "plpName",
+        "type": "String"
+      },
+      {
+        "attributeName": "plpType",
+        "type": "String"
+      },
+      {
+        "attributeName": "productId",
+        "type": "String"
+      },
+      {
+        "attributeName": "productListingId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productListingName",
+        "type": "String"
+      },
+      {
+        "attributeName": "productType",
+        "type": "String"
+      },
+      {
+        "attributeName": "appScreenHeight",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledHeight",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledRfycRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "scrolledRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "soldoutCount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortby",
+        "type": "String"
+      },
+      {
+        "attributeName": "subcategory",
+        "type": "String"
+      },
+      {
+        "attributeName": "totalRows",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "trigger",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productAddedToCartSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "product_id",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "quantity",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sku",
+        "type": "String"
+      },
+      {
+        "attributeName": "subtotal",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "from_screen",
+        "type": "String"
+      },
+      {
+        "attributeName": "discount_percentage",
+        "type": "String"
+      },
+      {
+        "attributeName": "delivery_days",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "atc_user",
+        "type": "String"
+      },
+      {
+        "attributeName": "add_from_details",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "deviceJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "deviceContext",
+          "contextAttributes": [
+            {
+              "attributeName": "os",
+              "fillIn": "default_os"
+            },
+            {
+              "attributeName": "osVersion",
+              "fillIn": "default_osVersion"
+            },
+            {
+              "attributeName": "browser",
+              "fillIn": "default_browser"
+            },
+            {
+              "attributeName": "ipAddress",
+              "fillIn": "127.0.0.1"
+            },
+            {
+              "attributeName": "advertisingTrackingEnabled",
+              "fillIn": false
+            },
+            {
+              "attributeName": "advertisingId",
+              "fillIn": "default_advertisingId"
+            },
+            {
+              "attributeName": "screenHeight",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenWidth",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenDensity",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "deviceManufacturer",
+              "fillIn": "default_deviceManufacturer"
+            },
+            {
+              "attributeName": "deviceModel",
+              "fillIn": "default_deviceModel"
+            },
+            {
+              "attributeName": "deviceName",
+              "fillIn": "default_deviceName"
+            },
+            {
+              "attributeName": "deviceType",
+              "fillIn": "default_deviceType"
+            },
+            {
+              "attributeName": "networkType",
+              "fillIn": "default_networkType"
+            },
+            {
+              "attributeName": "cellularNetwork",
+              "fillIn": "default_cellularNetwork"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "visitorJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "visitorContext",
+          "contextAttributes": [
+            {
+              "attributeName": "utmSource",
+              "fillIn": "default_utm_source"
+            },
+            {
+              "attributeName": "utmContent",
+              "fillIn": "default_utmContent"
+            },
+            {
+              "attributeName": "utmMedium",
+              "fillIn": "default_utmMedium"
+            },
+            {
+              "attributeName": "customerId",
+              "fillIn": -1000
+            },
+            {
+              "attributeName": "utmCampaign",
+              "fillIn": "default_utmCampaign"
+            },
+            {
+              "attributeName": "utmTerm",
+              "fillIn": "default_utmTerm"
+            },
+            {
+              "attributeName": "deeplink",
+              "fillIn": "default_deeplink"
+            },
+            {
+              "attributeName": "daysSinceLastVisit",
+              "fillIn": 7
+            },
+            {
+              "attributeName": "lastVisitDate",
+              "fillIn": 1654038581000
+            },
+            {
+              "attributeName": "visitorType",
+              "fillIn": "default_visitorType"
+            },
+            {
+              "attributeName": "hsSite",
+              "fillIn": "default_hsSite"
+            },
+            {
+              "attributeName": "segmentSource",
+              "fillIn": "default_segmentSource"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "ip2geoEnrich",
+          "foreignKey": [
+            "ipAddress"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "_ip2geo",
+          "contextAttributes": [
+            {
+              "attributeName": "city",
+              "fillIn": "MISSING"
+            },
+            {
+              "attributeName": "country",
+              "fillIn": "MISSING"
+            },
+            {
+              "attributeName": "continent",
+              "fillIn": "MISSING"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "pac_by_funnel",
+          "dimensions": [
+            "funnel"
+          ],
+          "attributes": [],
+          "featureInterval": 300000
+        },
+        {
+          "featureName": "total_products_added_to_cart",
+          "attributes": [],
+          "featureInterval": 300000
+        },
+        {
+          "featureName": "pac_by_unique_visitor_id",
+          "dimensions": [
+            "visitorId"
+          ],
+          "attributes": [
+            "product_id"
+          ],
+          "dataSketches": [
+            "LastN"
+          ],
+          "featureInterval": 60000,
+          "featureAsContextName": "productAddedToCart_product_idByVisitorId",
+          "items": 15,
+          "ttl": 1296000000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "warehousePickerTaskSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "pickerTaskId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "warehouseId",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "pickerId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "pickerName",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "MISSING"
+      },
+      {
+        "attributeName": "referenceId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "referenceType",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "SALE_ORDER",
+          "STOCK_TRANSFER",
+          "BIN_MOVEMENT",
+          "NON_SALE_ORDER"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "SALE_ORDER"
+      },
+      {
+        "attributeName": "trayId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "status",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "PICKED",
+          "ASSIGNED",
+          "CREATED",
+          "SIDELINED",
+          "COMPLETED",
+          "CANCELLED",
+          "SIDELINED_ASSIGNED",
+          "SIDELINED_CREATED",
+          "PENDING_FOR_BILLING",
+          "PENDING_PROMOTIONAL_PICKING",
+          "RETURN_PENDING_WITH_PICKER"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "ASSIGNED"
+      },
+      {
+        "attributeName": "priority",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "LOW",
+          "NORMAL",
+          "HIGH",
+          "EXPRESS"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "NORMAL"
+      },
+      {
+        "attributeName": "trayDestinationZone",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "BILLER_ZONE",
+          "COURIER_ZONE",
+          "EXPRESS_BILLER_ZONE",
+          "B2B_BILLER_ZONE",
+          "CANCELLED_ZONE",
+          "SIDELINED_ZONE"
+        ],
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": "BILLER_ZONE"
+      },
+      {
+        "attributeName": "promisedDeliveryDate",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "isCourierOrder",
+        "type": "Boolean",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": false
+      },
+      {
+        "attributeName": "warehouseTDD",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0
+      },
+      {
+        "attributeName": "isExpressOrder",
+        "type": "Boolean",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": false
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "locationEnrichment",
+          "foreignKey": [
+            "warehouseId"
+          ],
+          "missingLookupPolicy": "Reject",
+          "contextName": "warehouseContext",
+          "contextAttributes": [
+            {
+              "attributeName": "warehouseName"
+            },
+            {
+              "attributeName": "city"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byAll",
+          "dimensions": [
+            "status",
+            "priority",
+            "trayDestinationZone",
+            "pickerName",
+            "referenceType",
+            "warehouseName",
+            "city"
+          ],
+          "attributes": [],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "orderItems",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "orderId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderCreatedAt",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        }
+      },
+      {
+        "attributeName": "orderCustomerId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderTotalAmount",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "orderStatus",
+        "type": "String"
+      },
+      {
+        "attributeName": "orderItemId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderItemProductId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderItemPrice",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "orderItemDescription",
+        "type": "String"
+      },
+      {
+        "attributeName": "orderItemCategory",
+        "type": "String"
+      },
+      {
+        "attributeName": "orderItemStatus",
+        "type": "String"
+      },
+      {
+        "attributeName": "orderItemQuantity",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderItemCouponCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "orderItemDiscountAmount",
+        "type": "Decimal"
+      },
+      {
+        "attributeName": "orderItemDiscountType",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "ingestTimeLag": []
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "specialPageViewedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "from_feed_size",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "from_location",
+        "type": "String"
+      },
+      {
+        "attributeName": "from_screen",
+        "type": "String"
+      },
+      {
+        "attributeName": "from_section",
+        "type": "String"
+      },
+      {
+        "attributeName": "id",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "name",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "position",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "row",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sort_by",
+        "type": "String"
+      },
+      {
+        "attributeName": "track",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productSearchedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "brand",
+        "type": "String"
+      },
+      {
+        "attributeName": "category",
+        "type": "String"
+      },
+      {
+        "attributeName": "feed_size",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "from_feed_size",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "from_location",
+        "type": "String"
+      },
+      {
+        "attributeName": "from_screen",
+        "type": "String"
+      },
+      {
+        "attributeName": "from_section",
+        "type": "String"
+      },
+      {
+        "attributeName": "keyword",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp_name",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp_type",
+        "type": "String"
+      },
+      {
+        "attributeName": "sort_by",
+        "type": "String"
+      },
+      {
+        "attributeName": "sort_order",
+        "type": "String"
+      },
+      {
+        "attributeName": "track",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "retailTransactionsSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "orgId",
+        "type": "String"
+      },
+      {
+        "attributeName": "retailStoreId",
+        "type": "String"
+      },
+      {
+        "attributeName": "workstationId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "tillId",
+        "type": "Decimal",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "sequenceNumber",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "transactionTimestamp",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UnixMillisecond"
+        }
+      },
+      {
+        "attributeName": "operatorName",
+        "type": "String"
+      },
+      {
+        "attributeName": "currencyCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "itemId",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "itemName",
+        "type": "String"
+      },
+      {
+        "attributeName": "regularPrice",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "actualPrice",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "quantity",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "taxAuthority",
+        "type": "String"
+      },
+      {
+        "attributeName": "taxableAmount",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      },
+      {
+        "attributeName": "taxAmount",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Money",
+          "unit": "USD",
+          "unitDisplayName": "$"
+        },
+        "missingAttributePolicy": "StoreDefaultValue",
+        "default": 0.0
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "storeEnrichment",
+          "foreignKey": [
+            "retailStoreId"
+          ],
+          "missingLookupPolicy": "Reject",
+          "contextName": "storeContext",
+          "contextAttributes": [
+            {
+              "attributeName": "name"
+            },
+            {
+              "attributeName": "city"
+            },
+            {
+              "attributeName": "state"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byAll",
+          "dimensions": [
+            "retailStoreId",
+            "workstationId",
+            "operatorName",
+            "itemId",
+            "itemName",
+            "name",
+            "city",
+            "state"
+          ],
+          "attributes": [
+            "regularPrice",
+            "actualPrice",
+            "quantity",
+            "taxableAmount",
+            "taxAmount"
+          ],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "productImpressionSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "productId",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      }
+    ],
+    "enrich": {
+      "missingLookupPolicy": "StoreFillInValue",
+      "enrichments": [
+        {
+          "enrichmentName": "deviceJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "deviceContext",
+          "contextAttributes": [
+            {
+              "attributeName": "os",
+              "fillIn": "default_os"
+            },
+            {
+              "attributeName": "osVersion",
+              "fillIn": "default_osVersion"
+            },
+            {
+              "attributeName": "browser",
+              "fillIn": "default_browser"
+            },
+            {
+              "attributeName": "ipAddress",
+              "fillIn": "127.0.0.1"
+            },
+            {
+              "attributeName": "advertisingTrackingEnabled",
+              "fillIn": false
+            },
+            {
+              "attributeName": "advertisingId",
+              "fillIn": "default_advertisingId"
+            },
+            {
+              "attributeName": "screenHeight",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenWidth",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "screenDensity",
+              "fillIn": 2.0
+            },
+            {
+              "attributeName": "deviceManufacturer",
+              "fillIn": "default_deviceManufacturer"
+            },
+            {
+              "attributeName": "deviceModel",
+              "fillIn": "default_deviceModel"
+            },
+            {
+              "attributeName": "deviceName",
+              "fillIn": "default_deviceName"
+            },
+            {
+              "attributeName": "deviceType",
+              "fillIn": "default_deviceType"
+            },
+            {
+              "attributeName": "networkType",
+              "fillIn": "default_networkType"
+            },
+            {
+              "attributeName": "cellularNetwork",
+              "fillIn": "default_cellularNetwork"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "visitorJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "visitorContext",
+          "contextAttributes": [
+            {
+              "attributeName": "utmSource",
+              "fillIn": "default_utm_source"
+            },
+            {
+              "attributeName": "utmContent",
+              "fillIn": "default_utmContent"
+            },
+            {
+              "attributeName": "utmMedium",
+              "fillIn": "default_utmMedium"
+            },
+            {
+              "attributeName": "customerId",
+              "fillIn": -1000
+            },
+            {
+              "attributeName": "utmCampaign",
+              "fillIn": "default_utmCampaign"
+            },
+            {
+              "attributeName": "utmTerm",
+              "fillIn": "default_utmTerm"
+            },
+            {
+              "attributeName": "deeplink",
+              "fillIn": "default_deeplink"
+            },
+            {
+              "attributeName": "daysSinceLastVisit",
+              "fillIn": 7
+            },
+            {
+              "attributeName": "lastVisitDate",
+              "fillIn": 1654038581000
+            },
+            {
+              "attributeName": "visitorType",
+              "fillIn": "default_visitorType"
+            },
+            {
+              "attributeName": "hsSite",
+              "fillIn": "default_hsSite"
+            },
+            {
+              "attributeName": "segmentSource",
+              "fillIn": "default_segmentSource"
+            }
+          ]
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "boutiqueViewedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueEndDate",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueName",
+        "type": "String"
+      },
+      {
+        "attributeName": "boutiqueStartDate",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "boutiqueType",
+        "type": "String"
+      },
+      {
+        "attributeName": "daysSinceBoutiqueStart",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "feedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromFeedSize",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "fromLocation",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromScreen",
+        "type": "String"
+      },
+      {
+        "attributeName": "fromSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "plp",
+        "type": "String"
+      },
+      {
+        "attributeName": "plpType",
+        "type": "String"
+      },
+      {
+        "attributeName": "position",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "recoType",
+        "type": "String"
+      },
+      {
+        "attributeName": "row",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "soldoutCount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortBy",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortOrder",
+        "type": "String"
+      },
+      {
+        "attributeName": "track",
+        "type": "String"
+      },
+      {
+        "attributeName": "universal",
+        "type": "String"
+      }
+    ],
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "signalName": "orderPlacedSignal",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "visitorId",
+        "type": "String"
+      },
+      {
+        "attributeName": "userId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "funnel",
+        "type": "String"
+      },
+      {
+        "attributeName": "section",
+        "type": "String"
+      },
+      {
+        "attributeName": "subsection",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelTile",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelRow",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "sortbar",
+        "type": "String"
+      },
+      {
+        "attributeName": "sortbarGroup",
+        "type": "String"
+      },
+      {
+        "attributeName": "funnelSection",
+        "type": "String"
+      },
+      {
+        "attributeName": "receivedAt",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "orderId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "customerId",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "totalAmount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "totalQuantity",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "skuCount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "promotionDiscount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "promoCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "atcUser",
+        "type": "String"
+      },
+      {
+        "attributeName": "checkoutUser",
+        "type": "String"
+      },
+      {
+        "attributeName": "discount",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "discountPercentage",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "totalItemPrice",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "shipping",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "credit",
+        "type": "Integer"
+      },
+      {
+        "attributeName": "creditType",
+        "type": "String"
+      },
+      {
+        "attributeName": "paymentMode",
+        "type": "String"
+      },
+      {
+        "attributeName": "cardType",
+        "type": "String"
+      },
+      {
+        "attributeName": "gateway",
+        "type": "String"
+      },
+      {
+        "attributeName": "bankCode",
+        "type": "String"
+      },
+      {
+        "attributeName": "cardBrand",
+        "type": "String"
+      },
+      {
+        "attributeName": "card",
+        "type": "String"
+      },
+      {
+        "attributeName": "pincode",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "deliveryCity",
+        "type": "String"
+      },
+      {
+        "attributeName": "state",
+        "type": "String"
+      },
+      {
+        "attributeName": "country",
+        "type": "String"
+      },
+      {
+        "attributeName": "paymentRetry",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      }
+    ],
+    "enrich": {
+      "enrichments": [
+        {
+          "enrichmentName": "deviceJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "deviceContext",
+          "contextAttributes": [
+            {
+              "attributeName": "os",
+              "fillIn": "default_os"
+            },
+            {
+              "attributeName": "browser",
+              "fillIn": "default_browser"
+            },
+            {
+              "attributeName": "osVersion",
+              "fillIn": "default_osVersion"
+            },
+            {
+              "attributeName": "deviceModel",
+              "fillIn": "default_deviceModel"
+            },
+            {
+              "attributeName": "deviceName",
+              "fillIn": "default_deviceName"
+            },
+            {
+              "attributeName": "deviceType",
+              "fillIn": "default_deviceType"
+            },
+            {
+              "attributeName": "deviceManufacturer",
+              "fillIn": "default_deviceManufacturer"
+            },
+            {
+              "attributeName": "networkType",
+              "fillIn": "default_networkType"
+            },
+            {
+              "attributeName": "cellularNetwork",
+              "fillIn": "default_cellularNetwork"
+            }
+          ]
+        },
+        {
+          "enrichmentName": "visitorJoin",
+          "foreignKey": [
+            "visitorId"
+          ],
+          "missingLookupPolicy": "StoreFillInValue",
+          "contextName": "visitorContext",
+          "contextAttributes": [
+            {
+              "attributeName": "utmSource",
+              "fillIn": "default_utm_source"
+            },
+            {
+              "attributeName": "utmContent",
+              "fillIn": "default_utmContent"
+            },
+            {
+              "attributeName": "utmMedium",
+              "fillIn": "default_utmMedium"
+            },
+            {
+              "attributeName": "utmCampaign",
+              "fillIn": "default_utmCampaign"
+            },
+            {
+              "attributeName": "utmTerm",
+              "fillIn": "default_utmTerm"
+            }
+          ]
+        }
+      ],
+      "ingestTimeLag": []
+    },
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byAll",
+          "dimensions": [
+            "funnel",
+            "section",
+            "subsection",
+            "funnelTile",
+            "funnelSection",
+            "funnelRow",
+            "sortbar",
+            "sortbarGroup",
+            "osVersion",
+            "deviceModel",
+            "deviceType",
+            "deviceName"
+          ],
+          "attributes": [
+            "totalAmount",
+            "totalQuantity",
+            "totalItemPrice",
+            "discount"
+          ],
+          "featureInterval": 300000
+        }
+      ]
+    },
+    "dataSynthesisStatus": "Disabled"
+  },
+  {
+    "contextName": "inventoryChanges_byItemNumFcId",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "itemNumber",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "fulfillmentCenter",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "timestamp",
+        "type": "Integer",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Timestamp",
+          "unit": "UuidTime"
+        }
+      },
+      {
+        "attributeName": "onHandValue",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Dimensionless",
+          "unit": "Count"
+        }
+      },
+      {
+        "attributeName": "demandValue",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Dimensionless",
+          "unit": "Count"
+        }
+      }
+    ],
+    "primaryKey": [
+      "itemNumber",
+      "fulfillmentCenter"
+    ]
+  },
+  {
+    "signalName": "inventoryChanges",
+    "missingAttributePolicy": "Reject",
+    "attributes": [
+      {
+        "attributeName": "itemNumber",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "fulfillmentCenter",
+        "type": "Integer",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        }
+      },
+      {
+        "attributeName": "operation",
+        "type": "String",
+        "tags": {
+          "category": "Dimension",
+          "firstSummary": "WORD_CLOUD"
+        },
+        "allowedValues": [
+          "change",
+          "set"
+        ]
+      },
+      {
+        "attributeName": "onHandValue",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Dimensionless",
+          "unit": "Count"
+        }
+      },
+      {
+        "attributeName": "demandValue",
+        "type": "Decimal",
+        "tags": {
+          "category": "Quantity",
+          "kind": "Dimensionless",
+          "unit": "Count"
+        }
+      }
+    ],
+    "postStorageStage": {
+      "features": [
+        {
+          "featureName": "byItemNumFcId",
+          "dimensions": [
+            "itemNumber",
+            "fulfillmentCenter",
+            "operation"
+          ],
+          "attributes": [
+            "onHandValue",
+            "demandValue"
+          ],
+          "featureInterval": 1000,
+          "featureAsContextName": "inventoryChanges_byItemNumFcId",
+          "materializedAs": "AccumulatingCount",
+          "items": 15,
+          "ttl": 1296000000,
+          "indexOnInsert": true
+        }
+      ]
+    }
+  }
+]

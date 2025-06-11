@@ -1,0 +1,48 @@
+###########################################################################
+#                         bios-jvm.options                              #
+#                                                                         #
+# - all flags defined here will be used by bios to startup the JVM        #
+# - one flag should be specified per line                                 #
+# - lines that do not start with '-' will be ignored                      #
+###########################################################################
+
+######################
+# STARTUP PARAMETERS #
+######################
+
+-XmsSERVER_HEAP_SIZE
+-XmxSERVER_HEAP_SIZE
+-XX:MetaspaceSize=96M
+-XX:MaxMetaspaceSize=256m
+-Djava.net.preferIPv4Stack=true
+-Djava.awt.headless=true
+-XX:+UnlockExperimentalVMOptions
+
+-XX:+UseG1GC
+
+# The ideal region size is (heap size) / 2048.
+-XX:G1HeapRegionSize=8m
+
+# Less percentage helps GC latency
+-XX:G1RSetUpdatingPauseTimePercent=5
+
+# Default is 200. The value has been determined by GC performance measurement
+# This is a reasonably-short pause time goal that GC can meet with the prod setup.
+-XX:MaxGCPauseMillis=100
+
+# Reduced from the default 45. Less percentage makes the G1GC marking cycle earlier.
+-XX:InitiatingHeapOccupancyPercent=30
+
+# for 7 CPUs
+-XX:ParallelGCThreads=3
+
+-XX:ConcGCThreads=1
+
+# We stop explicit full GC to avoid long pause.
+# Explicit full GC has been happening to avoid out-of-memory error on large-scale query.
+# Instead of reclaming memory by full GC, the server needs to reserve large-enough memory
+# to prepare for sudden large queries
+-XX:G1ReservePercent=20
+-XX:+DisableExplicitGC
+
+-Xlog:gc*,gc+stringdedup*=debug,safepoint,gc+age*=debug:/var/log/server/gc.log:time,uptime,tid,level,tags:filecount=20,filesize=10m

@@ -1,0 +1,680 @@
+---
+# CLUSTER_DNS_NAME if used anywhere in this file, will be replaced by
+# the actual DNS name of the current cluster, as declared in cluster_config.yaml.
+tenant_name: tenant2
+users:
+  - user: admin@tenant2.com
+    full_name: tenant2 admin
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+  - user: load@tenant2.com
+    full_name: Load Generator User
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+
+bios-integrations:
+  user: load@tenant2.com
+  password: strongPassword
+  apps_placement:
+    - integrations-webhook
+
+bios-sql:
+  user: load@tenant2.com
+  password: strongPassword
+
+load:
+  user: load@tenant2.com
+  password: strongPassword
+  load_pattern: CONSTANT
+  # load_pattern: GAUSSIAN
+  insert_threads: 3
+  upsert_threads: 1
+  select_threads: 3
+  per_call_sleep_ms: 90
+
+signals:
+  - signalName: impression
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: widgetUniqueName
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: source
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: touchPointId
+        type: Integer
+        tags:
+          category: Dimension
+      - attributeName: platform
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: vertical
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: impressionSpecificAttribute
+        type: String
+        tags:
+          category: Description
+    postStorageStage:
+      features:
+        - featureName: forActiveUsers
+          dimensions:
+            - userId
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forActiveUsers
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/activeUsers
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forUserWidgetPerformance
+          dimensions:
+            - userId
+            - widgetUniqueName
+            - source
+            - touchPointId
+            - platform
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forUserWidgetPerformance
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/userWidgetPerformance
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forWidgetPerformance
+          dimensions:
+            - widgetUniqueName
+            - source
+            - touchPointId
+            - platform
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forWidgetPerformance
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/widgetPerformance
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forUserVerticalBrowsing
+          dimensions:
+            - userId
+            - vertical
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forUserVerticalBrowsing
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/userVerticalBrowsing
+              userName: load@tenant2.com
+              password: strongPassword
+  - signalName: click
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: widgetUniqueName
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: source
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: touchPointId
+        type: Integer
+        tags:
+          category: Dimension
+      - attributeName: platform
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: vertical
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: clickSpecificAttribute
+        type: String
+        tags:
+          category: Description
+    postStorageStage:
+      features:
+        - featureName: forActiveUsers
+          dimensions:
+            - userId
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forActiveUsers
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/activeUsers
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forUserWidgetPerformance
+          dimensions:
+            - userId
+            - widgetUniqueName
+            - source
+            - touchPointId
+            - platform
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forUserWidgetPerformance
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/userWidgetPerformance
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forWidgetPerformance
+          dimensions:
+            - widgetUniqueName
+            - source
+            - touchPointId
+            - platform
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forWidgetPerformance
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/widgetPerformance
+              userName: load@tenant2.com
+              password: strongPassword
+        - featureName: forUserVerticalBrowsing
+          dimensions:
+            - userId
+            - vertical
+          attributes: []
+          featureInterval: 300000
+          alerts:
+            - alertName: forUserVerticalBrowsing
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/userVerticalBrowsing
+              userName: load@tenant2.com
+              password: strongPassword
+  - signalName: activeUsers
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: impressions
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: clicks
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    postStorageStage:
+      features:
+        - featureName: forAllTimeIndex
+          dimensions:
+            - userId
+          dataSketches: []
+          attributes:
+            - impressions
+            - clicks
+          featureInterval: 300000
+          indexed: true
+          timeIndexInterval: 1500000000000
+  - signalName: userWidgetPerformance
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: widgetUniqueName
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: source
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: touchPointId
+        type: Integer
+        tags:
+          category: Dimension
+      - attributeName: platform
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: impressions
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: clicks
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    postStorageStage:
+      features:
+        - featureName: forAllTimeIndex
+          dimensions:
+            - userId
+          dataSketches: []
+          attributes:
+            - widgetUniqueName
+            - source
+            - touchPointId
+            - platform
+            - impressions
+            - clicks
+          featureInterval: 300000
+          indexed: true
+          timeIndexInterval: 1500000000000
+  - signalName: widgetPerformance
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: widgetUniqueName
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: source
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: touchPointId
+        type: Integer
+        tags:
+          category: Dimension
+      - attributeName: platform
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: impressions
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: clicks
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+  - signalName: userVerticalBrowsing
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: vertical
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: impressions
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: clicks
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Dimensionless
+          unit: Count
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    postStorageStage:
+      features:
+        - featureName: forAllTimeIndex
+          dimensions:
+            - userId
+          dataSketches: []
+          attributes:
+            - vertical
+            - impressions
+            - clicks
+          featureInterval: 300000
+          indexed: true
+          timeIndexInterval: 1500000000000
+  - signalName: purchase
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: vertical
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: purchaseTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: unixMillisecond
+      - attributeName: purchaseSpecificAttribute
+        type: String
+        tags:
+          category: Description
+    postStorageStage:
+      features:
+        - featureName: forUserPurchaseTime
+          dimensions:
+            - userId
+            - vertical
+          attributes:
+            - purchaseTime
+          featureInterval: 300000
+          alerts:
+            - alertName: forUserPurchaseTime
+              condition: true
+              webhookUrl: https://CLUSTER_DNS_NAME/integration/tenant2/accumulation/userPurchaseTime
+              userName: load@tenant2.com
+              password: strongPassword
+  - signalName: userPurchaseTime
+    missingAttributePolicy: Reject
+    attributes:
+      - attributeName: userId
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: vertical
+        type: String
+        tags:
+          category: Dimension
+      - attributeName: latestPurchaseTime
+        type: Integer
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: unixMillisecond
+      - attributeName: reportTime
+        type: Integer
+        default: 0
+        tags:
+          category: Quantity
+          kind: Timestamp
+          unit: UnixMillisecond
+    postStorageStage:
+      features:
+        - featureName: forAllTimeIndex
+          dimensions:
+            - userId
+          dataSketches: []
+          attributes:
+            - vertical
+            - latestPurchaseTime
+          featureInterval: 300000
+          indexed: true
+          timeIndexInterval: 1500000000000
+
+importDataProcessors:
+  - processorName: accumulationUtils
+    encoding: plain
+    code: |
+      import json
+      import logging
+
+      def sanitize_event(event_in):
+          event = None
+          if type(event_in) is dict:
+              event = event_in
+          else:
+              event = json.loads(event_in)
+          return event
+
+      def accumulate_general(signal_name, event_in, copy_attributes=None):
+          event = sanitize_event(event_in)
+          logger = logging.getLogger("AccumulationUtils")
+          logger.info(f"signal {signal_name}, event: <{event}>")
+
+          out = {}
+          if copy_attributes:
+              for attribute in copy_attributes:
+                  out[attribute] = event[attribute]
+
+          out["impressions"] = 0
+          out["clicks"] = 0
+
+          if signal_name == "impression" and "count()" in event:
+              out["impressions"] = event["count()"]
+          if signal_name == "click" and "count()" in event:
+              out["clicks"] = event["count()"]
+
+          return out
+
+      def accumulate_active_users(signal_name, event_in):
+          return accumulate_general(signal_name, event_in, ["userId"])
+
+      def accumulate_user_widget(signal_name, event_in):
+          return accumulate_general(signal_name, event_in, ["userId", "widgetUniqueName", "source", "touchPointId", "platform"])
+
+      def accumulate_widget(signal_name, event_in):
+          return accumulate_general(signal_name, event_in, ["widgetUniqueName", "source", "touchPointId", "platform"])
+
+      def accumulate_user_vertical(signal_name, event_in):
+          return accumulate_general(signal_name, event_in, ["userId", "vertical"])
+
+      def accumulate_user_purchase_time(signal_name, event_in):
+          event = sanitize_event(event_in)
+          out = accumulate_general(signal_name, event_in, ["userId", "vertical"])
+          out["latestPurchaseTime"] = event["max(purchaseTime)"]
+          return out
+
+importDestinations:
+  - importDestinationId: biosLogin
+    importDestinationName: biosLogin
+    type: Bios
+    endpoint: https://CLUSTER_DNS_NAME
+importSources:
+  - importSourceId: accumulationWebhook
+    importSourceName: accumulationWebhook
+    type: Webhook
+    webhookPath: /accumulation
+    authentication:
+      type: InMessage
+      inMessageUserAttribute: user
+      inMessagePasswordAttribute: password
+
+importFlowSpecs:
+  - importFlowId: activeUsers
+    importFlowName: activeUsers
+    sourceDataSpec:
+      importSourceId: accumulationWebhook
+      payloadType: Json
+      webhookSubPath: /activeUsers
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: activeUsers
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeNames:
+            - signalName
+            - event
+          processes:
+            - processorName: accumulationUtils
+              method: accumulate_active_users
+          transforms:
+            - rule: 'lambda out: out["userId"]'
+              as: userId
+            - rule: 'lambda out: out["impressions"]'
+              as: impressions
+            - rule: 'lambda out: out["clicks"]'
+              as: clicks
+  - importFlowId: userWidgetPerformance
+    importFlowName: userWidgetPerformance
+    sourceDataSpec:
+      importSourceId: accumulationWebhook
+      payloadType: Json
+      webhookSubPath: /userWidgetPerformance
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: userWidgetPerformance
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeNames:
+            - signalName
+            - event
+          processes:
+            - processorName: accumulationUtils
+              method: accumulate_user_widget
+          transforms:
+            - rule: 'lambda out: out["userId"]'
+              as: userId
+            - rule: 'lambda out: out["widgetUniqueName"]'
+              as: widgetUniqueName
+            - rule: 'lambda out: out["source"]'
+              as: source
+            - rule: 'lambda out: out["touchPointId"]'
+              as: touchPointId
+            - rule: 'lambda out: out["platform"]'
+              as: platform
+            - rule: 'lambda out: out["impressions"]'
+              as: impressions
+            - rule: 'lambda out: out["clicks"]'
+              as: clicks
+  - importFlowId: widgetPerformance
+    importFlowName: widgetPerformance
+    sourceDataSpec:
+      importSourceId: accumulationWebhook
+      payloadType: Json
+      webhookSubPath: /widgetPerformance
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: widgetPerformance
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeNames:
+            - signalName
+            - event
+          processes:
+            - processorName: accumulationUtils
+              method: accumulate_widget
+          transforms:
+            - rule: 'lambda out: out["widgetUniqueName"]'
+              as: widgetUniqueName
+            - rule: 'lambda out: out["source"]'
+              as: source
+            - rule: 'lambda out: out["touchPointId"]'
+              as: touchPointId
+            - rule: 'lambda out: out["platform"]'
+              as: platform
+            - rule: 'lambda out: out["impressions"]'
+              as: impressions
+            - rule: 'lambda out: out["clicks"]'
+              as: clicks
+  - importFlowId: userVerticalBrowsing
+    importFlowName: userVerticalBrowsing
+    sourceDataSpec:
+      importSourceId: accumulationWebhook
+      payloadType: Json
+      webhookSubPath: /userVerticalBrowsing
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: userVerticalBrowsing
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeNames:
+            - signalName
+            - event
+          processes:
+            - processorName: accumulationUtils
+              method: accumulate_user_vertical
+          transforms:
+            - rule: 'lambda out: out["userId"]'
+              as: userId
+            - rule: 'lambda out: out["vertical"]'
+              as: vertical
+            - rule: 'lambda out: out["impressions"]'
+              as: impressions
+            - rule: 'lambda out: out["clicks"]'
+              as: clicks
+  - importFlowId: userPurchaseTime
+    importFlowName: userPurchaseTime
+    sourceDataSpec:
+      importSourceId: accumulationWebhook
+      payloadType: Json
+      webhookSubPath: /userPurchaseTime
+    destinationDataSpec:
+      importDestinationId: biosLogin
+      type: Signal
+      name: userPurchaseTime
+    dataPickupSpec:
+      attributeSearchPath: ""
+      attributes:
+        - sourceAttributeName: timestampMillisSinceEpoch
+          as: reportTime
+        - sourceAttributeNames:
+            - signalName
+            - event
+          processes:
+            - processorName: accumulationUtils
+              method: accumulate_user_purchase_time
+          transforms:
+            - rule: 'lambda out: out["userId"]'
+              as: userId
+            - rule: 'lambda out: out["vertical"]'
+              as: vertical
+            - rule: 'lambda out: out["latestPurchaseTime"]'
+              as: latestPurchaseTime

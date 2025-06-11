@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d %-level [%t] %logger{1.1.7} - %msg{nolookups}%n"/>
+    </Console>
+    <File name="File" fileName="/var/log/server/server.log">
+      <PatternLayout pattern="%d %-level [%t] %logger{1.1.7} - %msg{nolookups}%n"/>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Logger name="io.isima" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    <Logger name="com.tieredfractals" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    <Logger name="io.netty" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    <Logger name="com.datastax.oss.driver.internal.core" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+    </Logger>
+    <Logger name="io.isima.bios.server.BiosServer" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <!-- Change this to debug level to log operation error details  -->
+    <Logger name="io.isima.bios2.server.services.RequestStream" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Logger name="io.isima.bios2.server.Http2FrameHandler" level="info" additivity="false">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Root level="info">
+      <AppenderRef ref="File" level="debug"/>
+      <AppenderRef ref="Console" level="warn"/>
+    </Root>
+  </Loggers>
+</Configuration>

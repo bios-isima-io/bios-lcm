@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# This script generates self signed certificate files.
+#
+# The tool creates three files from specified file prefix:
+#
+# ${FILE_PREFIX}.p12 -- PKCS12 certificate file
+# ${FILE_PREFIX}.cert.pem -- Certificate PEM file
+# ${FILE_PREFIX}.key.pem -- Private key PEM file
+
+if [ $# -lt 2 ]; then
+    echo "Usage: $(basename $0) <file_prefix> <common_name> [password]"
+    echo "  ** Password is 'secret' if omitted."
+    exit 1
+fi
+
+FILE_PREFIX=$1
+COMMON_NAME=$2
+PASSWORD=$3
+
+: ${PASSWORD:='secret'}
+
+rm -f "${FILE_PREFIX}.p12" "${FILE_PREFIX}.cert.pem" "${FILE_PREFIX}.key.pem"
+
+# Create keytool
+keytool -genkey -alias mycert \
+    -dname "CN=${COMMON_NAME}, OU=tfos, O=isima, L=Fremont, S=California, C=US" \
+    -keyalg RSA -sigalg SHA256withRSA -keystore "${FILE_PREFIX}.p12" -storetype pkcs12 \
+    -storepass ${PASSWORD} -keypass ${PASSWORD} -validity 9999
+
+openssl pkcs12 -in "${FILE_PREFIX}.p12" -passin pass:${PASSWORD} -nokeys -out "${FILE_PREFIX}.cert.pem"
+
+openssl pkcs12 -in "${FILE_PREFIX}.p12" -passin pass:${PASSWORD} -nodes -nocerts -out "${FILE_PREFIX}.key.pem"

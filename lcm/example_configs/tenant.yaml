@@ -1,0 +1,48 @@
+---
+# ${CLUSTER_DNS_NAME} if used anywhere in this file will be replaced by
+# the actual DNS name of the current cluster, as declared in cluster_config.yaml.
+# ${LB_HTTPS_PORT} if used anywhere in this file will be replaced by the actual
+# LB service https port.
+tenant_name: tenant1
+users:
+  - user: admin@tenant1.com
+    full_name: tenant1 admin
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+  - user: load@tenant1.com
+    full_name: Load Generator User
+    password: strongPassword
+    roles: [TenantAdmin, Report]
+support_user_password: strongPassword
+
+# load_pattern:
+#     - possible values are: CONSTANT, GAUSSIAN
+#     - additional params that can be configure for CONSTANT load
+#         - insert_threads: 3
+#         - upsert_threads: 1
+#         - select_threads: 3
+# profile_type:
+#     - possible values are: TEST, PERF
+#     - defaults to TEST (throughput of ~150 ops/sec)
+#     - PERF load is 10 times the TEST profile (~1500 ops/sec)
+load:
+  user: load@tenant1.com
+  password: strongPassword
+  load_pattern: CONSTANT
+  profile_type: TEST
+  per_call_sleep_ms: 90
+  insert_threads: 200
+  upsert_threads: 20
+  select_threads: 20
+
+bios-sql:
+  user: load@tenant1.com
+  password: strongPassword
+
+bios-integrations:
+  user: load@tenant1.com
+  password: strongPassword
+  apps_placement:
+    - integrations-webhook
+    - integrations-facebook-ad
+    - integrations-sql-pull

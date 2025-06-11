@@ -1,0 +1,3 @@
+[submodule "fluent-bit-bios"]
+	path = fluent-bit-bios
+	url = https://github.com/bios-isima-io/fluent-bit-bios.git
